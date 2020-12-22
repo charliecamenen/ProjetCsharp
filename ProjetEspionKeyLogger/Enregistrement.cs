@@ -13,7 +13,7 @@ namespace ProjetEspionKeyLogger
         private String contenu;
 
         //GetAsyncKeyState function : permet de savoir si une touche ets activé ou non
-        //Cette fonctionvient d'une librairie stocker dans user32.dll (le keylogger ne marche donc que sur windows, pas mac)
+        //Cette fonction vient d'une librairie stockée dans user32.dll (le keylogger ne marche donc que sur windows, pas mac)
         // l'argument est une "virtual key code " car chaque action est asscoiée à une clé
 
 
