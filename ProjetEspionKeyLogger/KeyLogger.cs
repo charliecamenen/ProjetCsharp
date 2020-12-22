@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 namespace ProjetEspionKeyLogger
 {
     class KeyLogger
-    {
+    {   //test lolo
         //Texte saisie depuis le dernier clic ou, touche "entré", ou temps > 30 seconde
         private Enregistrement enregistrement_courrant;
         //Timer qui permet de gerer l'envoit des mails (toutes les 60 minutes)
