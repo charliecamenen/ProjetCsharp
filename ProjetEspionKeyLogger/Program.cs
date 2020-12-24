@@ -9,9 +9,7 @@ namespace ProjetEspionKeyLogger
     class Program
     {
         static void Main(string[] args)
-        {
-
-            
+        {        
 
 
             //Ligne a supprimer la console ne devra surtout pas s'afficher une fois le progamme créé

