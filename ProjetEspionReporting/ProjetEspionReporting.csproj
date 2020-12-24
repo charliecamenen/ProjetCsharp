@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6A4E62F6-563C-49FB-AE33-2B58B4B6E699}</ProjectGuid>
+    <ProjectGuid>{B43B917D-6036-4228-9B15-625F5C43F238}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>ProjetEspionReporting</RootNamespace>
     <AssemblyName>ProjetEspionReporting</AssemblyName>
@@ -84,6 +84,9 @@
       <Project>{106b6293-9f13-4f11-8934-ec6f6a8a336a}</Project>
       <Name>ProjetEspionKeyLogger</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

