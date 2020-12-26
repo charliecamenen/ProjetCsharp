@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace ProjetEspionKeyLogger
+namespace ProjetKeyLogger
 {
     [Serializable]
     public class Enregistrement

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ProjetEspionKeyLogger;
+using ProjetKeyLogger;
 
 namespace ProjetEspionReporting
 {
@@ -16,7 +16,6 @@ namespace ProjetEspionReporting
         static void Main()
 
         {
-            CollectionEnregistrement collection_enregistrement = new CollectionEnregistrement();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());

