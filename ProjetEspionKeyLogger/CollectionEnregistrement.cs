@@ -80,7 +80,7 @@ namespace ProjetEspionKeyLogger
             XmlSerializer serializer = new XmlSerializer(typeof(CollectionEnregistrement));
             serializer.Serialize(file, this);
 
-                      
+
             //fermeture du fichier
             file.Close();
         }
@@ -100,14 +100,14 @@ namespace ProjetEspionKeyLogger
             return collection_enregistrement;
         }
 
-        
+
         public void afficher()
         {
             foreach (Enregistrement enregistrement in list_enregistrement)
             {
-                Console.Write(enregistrement.Date + " - " + enregistrement.Adresse +" - " + enregistrement.Contenu);
+                Console.Write(enregistrement.Date + " - " + enregistrement.Adresse + " - " + enregistrement.Contenu);
             }
-                
+
         }
 
     }

