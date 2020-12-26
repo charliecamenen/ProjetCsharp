@@ -16,6 +16,9 @@ namespace ProjetEspionKeyLogger
 {
     class KeyLogger
     {   
+
+
+        //ede
         //Texte saisie depuis le dernier clic ou, touche "entré", ou temps > 30 seconde
         private CollectionEnregistrement collection_enregistrement;
     
