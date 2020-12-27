@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using ProjetEspionKeyLogger;
+using ProjetKeyLogger;
 
 namespace ProjetEspionReporting
 {
@@ -19,18 +19,18 @@ namespace ProjetEspionReporting
             //Chargement du fichier XML
             collection_enregistrement = CollectionEnregistrement.loadFromXML("../../../TestXML.xml");
 
-            List<Enregistrement> list_enregistrement = collection_enregistrement.List_Enregistrement;
-
             //On affiche dans la console 
-            foreach (Enregistrement enregistrement in list_enregistrement)
+            for(int i = 0; i < collection_enregistrement.List_Enregistrement.Count; i++)
             {
-                this.listBox_enregistrements.Items.Add(enregistrement.Date);
-
-
+                //On affiche la date dans la liste d'enregistrement
+                this.listBox_enregistrements.Items.Add(collection_enregistrement.List_Enregistrement[i].Date);
             }
 
-            listBox_enregistrements.EndUpdate();
+        }
 
+        private void listBox_enregistrements_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            label_contenu.Text = collection_enregistrement.List_Enregistrement[listBox_enregistrements.SelectedIndex].Contenu;
         }
     }
 }
