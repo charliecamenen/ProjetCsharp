@@ -41,6 +41,7 @@ namespace ProjetEspionReporting
             this.label_adresse = new System.Windows.Forms.Label();
             this.label_date = new System.Windows.Forms.Label();
             this.comboBox_date = new System.Windows.Forms.ComboBox();
+            this.openFileDialog_ouvrir = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,7 +53,7 @@ namespace ProjetEspionReporting
             this.fichierToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1234, 33);
+            this.menuStrip1.Size = new System.Drawing.Size(1234, 36);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -111,6 +112,7 @@ namespace ProjetEspionReporting
             this.button_recherche.Text = "Rechercher";
             this.button_recherche.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
             this.button_recherche.UseVisualStyleBackColor = true;
+            this.button_recherche.Click += new System.EventHandler(this.button_recherche_Click);
             // 
             // textBox_recherche
             // 
@@ -153,6 +155,11 @@ namespace ProjetEspionReporting
             this.comboBox_date.Size = new System.Drawing.Size(160, 28);
             this.comboBox_date.TabIndex = 9;
             // 
+            // openFileDialog_ouvrir
+            // 
+            this.openFileDialog_ouvrir.FileName = "openFileDialog1";
+            this.openFileDialog_ouvrir.Multiselect = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -192,6 +199,7 @@ namespace ProjetEspionReporting
         private System.Windows.Forms.Label label_adresse;
         private System.Windows.Forms.Label label_date;
         private System.Windows.Forms.ComboBox comboBox_date;
+        private System.Windows.Forms.OpenFileDialog openFileDialog_ouvrir;
     }
 }
 
