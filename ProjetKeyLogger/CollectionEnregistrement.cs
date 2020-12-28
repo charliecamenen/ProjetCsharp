@@ -69,7 +69,7 @@ namespace ProjetKeyLogger
         //sauvegarde dans un fichier XML
         public void saveToXml(string file_path)
         {
-
+            /*
             //On vérifie si le fichier existe
             if (File.Exists(file_path))
             {
@@ -79,7 +79,7 @@ namespace ProjetKeyLogger
                 attributs = RemoveAttribute(attributs, FileAttributes.Hidden);
                 File.SetAttributes(file_path, attributs);
             }
-           
+           */
 
             //Fichier XML
             FileStream file = File.Open(file_path, FileMode.Create);

