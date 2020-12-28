@@ -74,6 +74,15 @@ namespace ProjetKeyLogger
             contenu += caractere;
         }
 
+        //Fonction qui supprime le dernier caractere
+        public void effacerContenu()
+        {
+            //Ajout du caracter au contenu du 
+            if(contenu.Length != 0)
+            {
+                contenu = contenu.Substring(0, contenu.Length - 1);
+            }
+        }
 
         public string traitementContenue()
         {
