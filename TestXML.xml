@@ -1,4 +1,17 @@
 <?xml version="1.0"?>
 <CollectionEnregistrement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <List_Enregistrement />
+  <List_Enregistrement>
+    <Enregistrement>
+      <Contenu>&#x1;&#x1;FACEBOOK</Contenu>
+      <Date>27/12/2020 16:03:20</Date>
+      <Adresse_Ip_Publique>2a01:cb08:8a48:5800:81ac:bded:1b9e:cf1a
+</Adresse_Ip_Publique>
+    </Enregistrement>
+    <Enregistrement>
+      <Contenu>&#x1;&#x1;&#x1;&#x1;&#x1;&#x1;&#x1;&#x1;COUCOU C4&#x8;E &#x8;CI EST UN TEST POUR MON JEU&#x8;&#x8;&#x8;PROJET &#x10;CSHAT&#x8;RP</Contenu>
+      <Date>27/12/2020 16:04:10</Date>
+      <Adresse_Ip_Publique>2a01:cb08:8a48:5800:81ac:bded:1b9e:cf1a
+</Adresse_Ip_Publique>
+    </Enregistrement>
+  </List_Enregistrement>
 </CollectionEnregistrement>
