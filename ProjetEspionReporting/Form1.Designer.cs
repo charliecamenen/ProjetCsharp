@@ -68,7 +68,7 @@ namespace ProjetEspionReporting
             // ouvrirToolStripMenuItem
             // 
             this.ouvrirToolStripMenuItem.Name = "ouvrirToolStripMenuItem";
-            this.ouvrirToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.ouvrirToolStripMenuItem.Size = new System.Drawing.Size(163, 34);
             this.ouvrirToolStripMenuItem.Text = "Ouvrir";
             this.ouvrirToolStripMenuItem.Click += new System.EventHandler(this.ouvrirToolStripMenuItem_Click);
             // 
@@ -128,6 +128,7 @@ namespace ProjetEspionReporting
             this.comboBox_adresse.Name = "comboBox_adresse";
             this.comboBox_adresse.Size = new System.Drawing.Size(160, 28);
             this.comboBox_adresse.TabIndex = 6;
+            this.comboBox_adresse.SelectedIndexChanged += new System.EventHandler(this.comboBox_adresse_SelectedIndexChanged);
             // 
             // label_adresse
             // 
