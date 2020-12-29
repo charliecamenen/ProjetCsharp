@@ -83,7 +83,7 @@ namespace ProjetKeyLogger
                             //Si touche Entrée
                             case 13:
                                 //On ajoute l'enregistrement a la collection
-                                collection_enregistrement.ajouter(enregistrement);
+                                collection_enregistrement.ajouterNew(enregistrement);
 
                                 //On réinitialise l'enregistrement
                                 enregistrement = new Enregistrement();
