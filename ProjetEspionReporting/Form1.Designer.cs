@@ -53,7 +53,7 @@ namespace ProjetEspionReporting
             this.fichierToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1234, 36);
+            this.menuStrip1.Size = new System.Drawing.Size(1234, 33);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -132,7 +132,7 @@ namespace ProjetEspionReporting
             // label_adresse
             // 
             this.label_adresse.AutoSize = true;
-            this.label_adresse.Location = new System.Drawing.Point(29, 36);
+            this.label_adresse.Location = new System.Drawing.Point(29, 39);
             this.label_adresse.Name = "label_adresse";
             this.label_adresse.Size = new System.Drawing.Size(76, 20);
             this.label_adresse.TabIndex = 7;
