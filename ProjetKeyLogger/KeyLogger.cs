@@ -132,7 +132,7 @@ namespace ProjetKeyLogger
                             case 91:
                                 Console.Write("[WINDOWS]");
                                 break;
-
+                                                                   
                             default:
                                 //probleme du pavé numérique
                                 //le 0 correspond au code 96 c'est pour cela que l'on fait -96 à tous au lieu d'affecter une valeur à chaque nombre
