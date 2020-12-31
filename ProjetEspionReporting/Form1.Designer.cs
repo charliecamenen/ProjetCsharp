@@ -155,6 +155,7 @@ namespace ProjetEspionReporting
             this.comboBox_date.Name = "comboBox_date";
             this.comboBox_date.Size = new System.Drawing.Size(160, 28);
             this.comboBox_date.TabIndex = 9;
+            this.comboBox_date.SelectedIndexChanged += new System.EventHandler(this.comboBox_date_SelectedIndexChanged);
             // 
             // openFileDialog_ouvrir
             // 

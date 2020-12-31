@@ -8,7 +8,7 @@ namespace ProjetKeyLogger
     {
         //Contenu de l'enregistrement courrant
         private String contenu;
-        private String date;
+        private DateTime date;
         private String adresse_ip_publique;
 
         public Enregistrement()
@@ -40,7 +40,7 @@ namespace ProjetKeyLogger
             }
         }
         //proprieté en lecture / ecriture
-        public String Date
+        public DateTime Date
         {
             get
             {
@@ -69,10 +69,7 @@ namespace ProjetKeyLogger
         public void dateTimeNow()
         {
             //Date actuelle
-            DateTime thisDay = DateTime.Now;
-
-            //retourne la date sous forme de chaine
-            date = thisDay.ToString();
+            date =  DateTime.Now;
         }
 
         //Renvoie l'adresse IP publique
