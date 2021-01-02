@@ -112,7 +112,7 @@ namespace ProjetEspionReporting
             this.button_recherche.Text = "Rechercher";
             this.button_recherche.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
             this.button_recherche.UseVisualStyleBackColor = true;
-            this.button_recherche.Click += new System.EventHandler(this.button_recherche_Click);
+            this.button_recherche.Click += new System.EventHandler(this.updateListBox);
             // 
             // textBox_recherche
             // 
@@ -120,6 +120,7 @@ namespace ProjetEspionReporting
             this.textBox_recherche.Name = "textBox_recherche";
             this.textBox_recherche.Size = new System.Drawing.Size(234, 26);
             this.textBox_recherche.TabIndex = 5;
+            this.textBox_recherche.TextChanged += new System.EventHandler(this.updateListBox);
             // 
             // comboBox_adresse
             // 
@@ -128,7 +129,7 @@ namespace ProjetEspionReporting
             this.comboBox_adresse.Name = "comboBox_adresse";
             this.comboBox_adresse.Size = new System.Drawing.Size(160, 28);
             this.comboBox_adresse.TabIndex = 6;
-            this.comboBox_adresse.SelectedIndexChanged += new System.EventHandler(this.comboBox_adresse_SelectedIndexChanged);
+            this.comboBox_adresse.SelectedIndexChanged += new System.EventHandler(this.updateListBox);
             // 
             // label_adresse
             // 
@@ -155,7 +156,7 @@ namespace ProjetEspionReporting
             this.comboBox_date.Name = "comboBox_date";
             this.comboBox_date.Size = new System.Drawing.Size(160, 28);
             this.comboBox_date.TabIndex = 9;
-            this.comboBox_date.SelectedIndexChanged += new System.EventHandler(this.comboBox_date_SelectedIndexChanged);
+            this.comboBox_date.SelectedIndexChanged += new System.EventHandler(this.updateListBox);
             // 
             // openFileDialog_ouvrir
             // 

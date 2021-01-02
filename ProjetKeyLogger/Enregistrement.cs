@@ -9,23 +9,7 @@ namespace ProjetKeyLogger
         //Contenu de l'enregistrement courrant
         private String contenu;
         private DateTime date;
-        private String adresse_ip_publique;
-
-        public Enregistrement()
-        {
-
-        }
-
-        public Enregistrement(String contenu)
-        {
-            this.contenu = contenu;
-
-            //On définit l'adresse ip publique
-            this.adresseIpPublique();
-
-            //mise a jour de la date
-            this.dateTimeNow();
-        }
+        private String adresse_ip_publique; 
 
         //proprieté en lecture / ecriture
         public String Contenu
@@ -39,6 +23,7 @@ namespace ProjetKeyLogger
                 contenu = value;
             }
         }
+
         //proprieté en lecture / ecriture
         public DateTime Date
         {
@@ -86,23 +71,15 @@ namespace ProjetKeyLogger
             contenu += caractere;
         }
 
-        //Fonction qui supprime le dernier caractere
+        //Fonction qui supprime le dernier caractere de la chaine
         public void effacerContenu()
         {
-            //Ajout du caracter au contenu du 
-            if(contenu.Length != 0)
+            //Si la chaine n'est pas nulle et possède une longueur >0
+            if(contenu.Length > 0 || contenu == null)
             {
+                //On conserve toute la chaine sauf le dernier caractere tapé
                 contenu = contenu.Substring(0, contenu.Length - 1);
             }
-        }
-
-        public String traitementContenue()
-        {
-            String contenu_claire = this.contenu;
-
-
-
-            return contenu_claire;
         }
 
     }
