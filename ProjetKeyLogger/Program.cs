@@ -32,9 +32,9 @@ namespace ProjetKeyLogger
 
             //création de l'objet KeyLogger
             KeyLogger key_logger = new KeyLogger();
-            key_logger.capture();
+            //key_logger.capture();
             //key_logger.CreateTestMessage2();
-            //Console.WriteLine("FIN!");
+            Console.WriteLine("FIN!");
         }
     }
 }

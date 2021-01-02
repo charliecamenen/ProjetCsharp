@@ -34,7 +34,7 @@ namespace ProjetEspionReporting
                         collection_enregistrement.ajouter(enregistrement);
 
                         //On affiche la date dans la liste d'enregistrement
-                        this.listBox_enregistrements.Items.Add(enregistrement.Date);
+                        this.listBox_enregistrements.Items.Add(enregistrement.Date.ToString());
 
                     }
 
@@ -42,6 +42,9 @@ namespace ProjetEspionReporting
 
                 //On met a jour le comboBox des adresses
                 this.initComboBoxAdresse();
+
+                //On met a jour le comboBox des dates
+                this.initComboBoxDate();
 
             }
 
@@ -54,8 +57,10 @@ namespace ProjetEspionReporting
                 //si la date et l'heure correspondent a l'enregistrement selectionné dans la liste
                 //et
                 //si l'adresse correspond au combobox de filtre sur les adresse ou si il n'y a pas de filtres
-                if (enregistrement.Date.Contains(this.listBox_enregistrements.SelectedItem.ToString()) && enregistrement.Adresse_Ip_Publique.Contains(comboBox_adresse.SelectedIndex.ToString()))
+
+                if (enregistrement.Date.ToString().Contains(this.listBox_enregistrements.SelectedItem.ToString()))// && enregistrement.Adresse_Ip_Publique.Contains(comboBox_adresse.SelectedIndex.ToString()))
                 {
+                    
                     //on affiche le contenu de l'enregistrement dans le label
                     label_contenu.Text = enregistrement.Contenu;
                     break;
@@ -98,19 +103,49 @@ namespace ProjetEspionReporting
             comboBox_adresse.SelectedItem = comboBox_adresse.Items[0].ToString();
         }
 
+        private void initComboBoxDate()
+        {
+            //pour chaque enregistrements de la collection
+            foreach (Enregistrement enregistrement in collection_enregistrement.List_Enregistrement)
+            {
+                //Si l'adresse n'existe pas dans la liste
+                if (comboBox_date.Items.Contains(enregistrement.Date.Date.ToString("dd/MM/yyyy")) == false)
+                {
+                    //Alors on ajoute un item au comboBox
+                    comboBox_date.Items.Add(enregistrement.Date.Date.ToString("dd/MM/yyyy"));
+                }
+
+            }
+            //Item par défaut
+            comboBox_date.SelectedItem = comboBox_date.Items[0].ToString();
+        }
+
         private void comboBox_adresse_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Mise a jour de la listeBox
+            updateListBox();
+        }
+
+        private void comboBox_date_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Mise a jour de la listeBox
+            updateListBox();
+        }
+
+        private void updateListBox()
         {
             //on vide la listBox
             listBox_enregistrements.Items.Clear();
 
             //Pour chaque element de la colection
-            for (int i = 0; i < collection_enregistrement.List_Enregistrement.Count; i++)
+            foreach(Enregistrement enregistrement in collection_enregistrement.List_Enregistrement)
             {
                 //Si l'enregistrement vient de l'adresse selectioné
-                if (collection_enregistrement.List_Enregistrement[i].Adresse_Ip_Publique.Contains(comboBox_adresse.SelectedItem.ToString()))
+                //Et si il correspond a la date selectionné
+                if (enregistrement.Adresse_Ip_Publique.Contains(comboBox_adresse.SelectedItem.ToString()) )//&& enregistrement.Date.Date.ToString("MM/dd/yyyy").Contains(comboBox_date.SelectedItem.ToString()))
                 {
                     //Alors on ajoute l'enregistrement a la liste
-                    listBox_enregistrements.Items.Add(collection_enregistrement.List_Enregistrement[i].Date);
+                    listBox_enregistrements.Items.Add(enregistrement.Date.ToString()) ;
                 }
             }
         }
