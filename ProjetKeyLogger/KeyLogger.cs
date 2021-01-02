@@ -302,7 +302,8 @@ namespace ProjetKeyLogger
                                 }
                                 break;
 
-                            //les fleches mais jsp pq les nombres sont associés à 255
+                            //les fleches mais jsp pq les nombres sont associés à 255 aussi
+                            //je pense trop compliqué de se déplacer dans le texte avec donc vaut mieux rien faire
                             case 37:
                             case 38:
                             case 39:
