@@ -65,7 +65,7 @@ namespace ProjetKeyLogger
         }
 
         //Fonction qui concatene la derniere touche tapé au clavier , au contenu de l'enregistrement
-        public void ajouterContenu(char caractere)
+        public void ajouterContenu(string caractere)
         {
             //Ajout du caracter au contenu du text
             contenu += caractere;

