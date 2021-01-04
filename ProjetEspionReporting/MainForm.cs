@@ -16,11 +16,9 @@ namespace ProjetEspionReporting
 
         private void ouvrirToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
             //Chargement du fichier XML
             if (this.openFileDialog_ouvrir.ShowDialog() == DialogResult.OK)
             {
-
                 //Instanciation de la collection
                 collection_enregistrement = new CollectionEnregistrement();
 
@@ -35,16 +33,12 @@ namespace ProjetEspionReporting
 
                         //On affiche la date dans la liste d'enregistrement
                         this.listBox_enregistrements.Items.Add(enregistrement.Date.ToString());
-
                     }
-
                 }
 
                 //On met a jour les comboBox date et adresses
                 this.initComboBox();
-
             }
-
         }
 
         private void listBox_enregistrements_SelectedIndexChanged(object sender, EventArgs e)
@@ -64,7 +58,6 @@ namespace ProjetEspionReporting
                     break;
                  }
             }
-            
         }
 
         private void initComboBox()
@@ -86,7 +79,6 @@ namespace ProjetEspionReporting
                     //Alors on ajoute un item au comboBox
                     comboBox_date.Items.Add(enregistrement.Date.Date.ToString("dd/MM/yyyy"));
                 }
-
             }
             //Item par défaut
             comboBox_adresse.SelectedItem = comboBox_adresse.Items[0].ToString();
