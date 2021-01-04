@@ -6,11 +6,11 @@ using ProjetKeyLogger;
 
 namespace ProjetEspionReporting
 {
-    public partial class Form1 : Form
+    public partial class Reporting : Form
     {
         CollectionEnregistrement collection_enregistrement = new CollectionEnregistrement();
 
-        public Form1()
+        public Reporting()
         {
             InitializeComponent();
         }

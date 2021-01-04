@@ -1,7 +1,7 @@
 ﻿
 namespace ProjetEspionReporting
 {
-    partial class Form1
+    partial class Reporting
     {
         /// <summary>
         /// Variable nécessaire au concepteur.
@@ -68,19 +68,20 @@ namespace ProjetEspionReporting
             // ouvrirToolStripMenuItem
             // 
             this.ouvrirToolStripMenuItem.Name = "ouvrirToolStripMenuItem";
-            this.ouvrirToolStripMenuItem.Size = new System.Drawing.Size(163, 34);
+            this.ouvrirToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.ouvrirToolStripMenuItem.Text = "Ouvrir";
             this.ouvrirToolStripMenuItem.Click += new System.EventHandler(this.ouvrirToolStripMenuItem_Click);
             // 
             // listBox_enregistrements
             // 
             this.listBox_enregistrements.BackColor = System.Drawing.SystemColors.InfoText;
+            this.listBox_enregistrements.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBox_enregistrements.ForeColor = System.Drawing.Color.LawnGreen;
             this.listBox_enregistrements.FormattingEnabled = true;
-            this.listBox_enregistrements.ItemHeight = 20;
-            this.listBox_enregistrements.Location = new System.Drawing.Point(22, 116);
+            this.listBox_enregistrements.ItemHeight = 25;
+            this.listBox_enregistrements.Location = new System.Drawing.Point(22, 126);
             this.listBox_enregistrements.Name = "listBox_enregistrements";
-            this.listBox_enregistrements.Size = new System.Drawing.Size(297, 364);
+            this.listBox_enregistrements.Size = new System.Drawing.Size(297, 354);
             this.listBox_enregistrements.TabIndex = 1;
             this.listBox_enregistrements.SelectedIndexChanged += new System.EventHandler(this.listBox_enregistrements_SelectedIndexChanged);
             // 
@@ -88,10 +89,11 @@ namespace ProjetEspionReporting
             // 
             this.label_contenu.BackColor = System.Drawing.Color.Black;
             this.label_contenu.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label_contenu.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_contenu.ForeColor = System.Drawing.Color.LawnGreen;
-            this.label_contenu.Location = new System.Drawing.Point(367, 116);
+            this.label_contenu.Location = new System.Drawing.Point(367, 126);
             this.label_contenu.Name = "label_contenu";
-            this.label_contenu.Size = new System.Drawing.Size(835, 364);
+            this.label_contenu.Size = new System.Drawing.Size(835, 354);
             this.label_contenu.TabIndex = 2;
             // 
             // label_recherche
@@ -163,7 +165,7 @@ namespace ProjetEspionReporting
             this.openFileDialog_ouvrir.FileName = "openFileDialog1";
             this.openFileDialog_ouvrir.Multiselect = true;
             // 
-            // Form1
+            // Reporting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -179,8 +181,8 @@ namespace ProjetEspionReporting
             this.Controls.Add(this.listBox_enregistrements);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "Reporting";
+            this.Text = "Reporting";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);

