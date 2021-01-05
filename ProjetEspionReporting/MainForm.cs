@@ -14,6 +14,7 @@ namespace ProjetEspionReporting
             InitializeComponent();
         }
 
+        //Ouverture de fichier
         private void ouvrirToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //Chargement du fichier XML
@@ -22,7 +23,7 @@ namespace ProjetEspionReporting
                 //Instanciation de la collection
                 collection_enregistrement = new CollectionEnregistrement();
 
-                // pour chaque documents
+                //Pour chaque documents
                 foreach (String file in openFileDialog_ouvrir.FileNames)
                 {
                     //Pour chaque enregistrement
@@ -74,8 +75,6 @@ namespace ProjetEspionReporting
                 //Si la date n'existe pas dans la liste
                 if (comboBox_date.Items.Contains(enregistrement.Date.Date.ToString("dd/MM/yyyy")) == false)
                 {
-                    Debug.WriteLine(comboBox_date.Items.ToString());
-                    Debug.WriteLine(enregistrement.Date.Date.ToString("dd/MM/yyyy"));
                     //Alors on ajoute un item au comboBox
                     comboBox_date.Items.Add(enregistrement.Date.Date.ToString("dd/MM/yyyy"));
                 }
@@ -128,9 +127,10 @@ namespace ProjetEspionReporting
                         }
                     }
                 }
-                //Si il existe des enregistrement correspondant aux collection
+                //Si il existe des enregistrement correspondant aux conditions
                 if(listBox_enregistrements.Items.Count > 0)
                 {
+                    //Alors on défini l'enregistrement 0 par défaut
                     listBox_enregistrements.SelectedItem = listBox_enregistrements.Items[0].ToString();
                 }
             }

